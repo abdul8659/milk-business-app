@@ -1076,7 +1076,9 @@
                     version: '2.0'
                 };
                 
-                const content = btoa(JSON.stringify(data, null, 2));
+                // Fix encoding issue for Urdu text
+                const jsonString = JSON.stringify(data, null, 2);
+                const content = btoa(unescape(encodeURIComponent(jsonString)));
                 
                 // Get current file SHA if exists
                 let sha = null;
@@ -1097,7 +1099,7 @@
                 }
                 
                 const requestBody = {
-                    message: `Milk Business Backup - ${new Date().toLocaleString('ur-PK')}`,
+                    message: `Milk Business Backup - ${new Date().toLocaleString('en-US')}`,
                     content: content
                 };
                 
@@ -1118,6 +1120,7 @@
                 if (response.ok) {
                     localStorage.setItem('last-github-sync', new Date().toISOString());
                     updateGitHubStatus();
+                    updateBackupStatus('GitHub بیک اپ: کامیاب', 'success');
                     showNotification('GitHub بیک اپ کامیاب!', 'success');
                 } else {
                     throw new Error(`HTTP ${response.status}`);
@@ -1125,6 +1128,7 @@
                 
             } catch (error) {
                 console.error('GitHub sync failed:', error);
+                updateBackupStatus('GitHub بیک اپ: ناکام', 'error');
                 showNotification('GitHub بیک اپ ناکام: ' + error.message, 'error');
             }
         }
@@ -1149,9 +1153,16 @@
                     }
                 });
                 
+                if (response.status === 404) {
+                    updateBackupStatus('GitHub بیک اپ: فائل نہیں ملی', 'error');
+                    showNotification('GitHub میں کوئی بیک اپ فائل نہیں ملی۔ پہلے بیک اپ بنائیں۔', 'error');
+                    return;
+                }
+                
                 if (response.ok) {
                     const fileData = await response.json();
-                    const content = atob(fileData.content);
+                    // Fix decoding issue for Urdu text
+                    const content = decodeURIComponent(escape(atob(fileData.content)));
                     const data = JSON.parse(content);
                     
                     if (data.customers && Array.isArray(data.customers)) {
@@ -1163,9 +1174,11 @@
                             loadCustomers();
                             updateDashboard();
                             
+                            updateBackupStatus('GitHub بحالی: کامیاب', 'success');
                             showNotification('GitHub سے ڈیٹا کامیابی سے بحال ہو گیا!', 'success');
                         });
                     } else {
+                        updateBackupStatus('GitHub بحالی: غلط فارمیٹ', 'error');
                         showNotification('GitHub فائل میں غلط ڈیٹا فارمیٹ', 'error');
                     }
                 } else {
@@ -1174,6 +1187,7 @@
                 
             } catch (error) {
                 console.error('GitHub restore failed:', error);
+                updateBackupStatus('GitHub بحالی: ناکام', 'error');
                 showNotification('GitHub سے بحالی ناکام: ' + error.message, 'error');
             }
         }
@@ -1214,8 +1228,11 @@
             if (enabled) {
                 autoBackupInterval = setInterval(() => {
                     saveToStorage();
-                    if (localStorage.getItem('github-token') && localStorage.getItem('github-repo')) {
-                        backupToGitHub();
+                    // Only sync to GitHub if properly configured
+                    const token = localStorage.getItem('github-token');
+                    const repo = localStorage.getItem('github-repo');
+                    if (token && repo) {
+                        setTimeout(() => backupToGitHub(), 1000); // Small delay to avoid rapid calls
                     }
                 }, parseInt(interval));
                 
