@@ -7,14 +7,6 @@
       "defaultRate": 200,
       "entries": [
         {
-          "id": 1750304269293,
-          "type": "payment",
-          "amount": 100,
-          "date": "2025-06-19",
-          "note": "",
-          "createdAt": "2025-06-19T03:37:49.293Z"
-        },
-        {
           "id": 1750265657520,
           "type": "delivery",
           "fromDate": "2025-06-18",
@@ -127,7 +119,7 @@
     }
   ],
   "nextId": 4,
-  "lastSync": "2025-06-19T03:56:50.308Z",
+  "lastSync": "2025-06-19T04:05:13.483Z",
   "version": "2.0",
   "appName": "دودھ کا کاروبار"
 }
