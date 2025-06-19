@@ -6,15 +6,14 @@
     "defaultRate": 200,
     "entries": [
       {
-        "id": 1750319912119,
+        "id": 1750347448725,
         "type": "delivery",
-        "month": "2024-06",
         "fromDate": "2025-06-18",
         "toDate": "2025-06-18",
         "liters": 1,
         "rate": 200,
-        "date": "2025-06-18",
-        "createdAt": "2025-06-19T07:58:32.119Z"
+        "month": "2025-06",
+        "createdAt": "2025-06-19T15:37:28.725Z"
       }
     ],
     "payments": [],
@@ -22,18 +21,17 @@
   },
   "entries": [
     {
-      "id": 1750319912119,
+      "id": 1750347448725,
       "type": "delivery",
-      "month": "2024-06",
       "fromDate": "2025-06-18",
       "toDate": "2025-06-18",
       "liters": 1,
       "rate": 200,
-      "date": "2025-06-18",
-      "createdAt": "2025-06-19T07:58:32.119Z"
+      "month": "2025-06",
+      "createdAt": "2025-06-19T15:37:28.725Z"
     }
   ],
   "payments": [],
-  "lastUpdated": "2025-06-19T10:52:50.608Z",
+  "lastUpdated": "2025-06-19T17:53:00.662Z",
   "backupDate": "2025-06-19"
 }
