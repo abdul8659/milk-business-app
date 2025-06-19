@@ -7,26 +7,18 @@
       "defaultRate": 200,
       "entries": [
         {
-          "id": 1750265657520,
+          "id": 1750319912119,
           "type": "delivery",
+          "month": "2024-06",
           "fromDate": "2025-06-18",
           "toDate": "2025-06-18",
           "liters": 1,
           "rate": 200,
           "date": "2025-06-18",
-          "createdAt": "2025-06-18T16:54:17.520Z"
+          "createdAt": "2025-06-19T07:58:32.119Z"
         }
       ],
-      "payments": [
-        {
-          "id": 1750304269293,
-          "type": "payment",
-          "amount": 100,
-          "date": "2025-06-19",
-          "note": "",
-          "createdAt": "2025-06-19T03:37:49.293Z"
-        }
-      ],
+      "payments": [],
       "createdAt": "2025-06-18T16:53:33.335Z"
     },
     {
@@ -34,28 +26,7 @@
       "name": "حاجی جعفر",
       "phone": "03001212345",
       "defaultRate": 200,
-      "entries": [
-        {
-          "id": 1750273249553,
-          "type": "delivery",
-          "fromDate": "2025-06-18",
-          "toDate": "2025-06-18",
-          "liters": 4,
-          "rate": 200,
-          "date": "2025-06-18",
-          "createdAt": "2025-06-18T19:00:49.553Z"
-        },
-        {
-          "id": 1750273235825,
-          "type": "delivery",
-          "fromDate": "2025-06-01",
-          "toDate": "2025-06-17",
-          "liters": 5,
-          "rate": 200,
-          "date": "2025-06-01",
-          "createdAt": "2025-06-18T19:00:35.825Z"
-        }
-      ],
+      "entries": [],
       "payments": [],
       "createdAt": "2025-06-18T16:53:50.897Z"
     },
@@ -119,7 +90,7 @@
     }
   ],
   "nextId": 4,
-  "lastSync": "2025-06-19T04:05:13.483Z",
+  "lastSync": "2025-06-19T08:00:15.218Z",
   "version": "2.0",
   "appName": "دودھ کا کاروبار"
 }
