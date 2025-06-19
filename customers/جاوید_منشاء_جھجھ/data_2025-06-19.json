@@ -1,0 +1,37 @@
+{
+  "customerInfo": {
+    "id": 1,
+    "name": "جاوید منشاء جھجھ",
+    "phone": "03016834400",
+    "defaultRate": 200,
+    "entries": [
+      {
+        "id": 1750262769066,
+        "type": "delivery",
+        "fromDate": "2025-06-18",
+        "toDate": "2025-06-18",
+        "liters": 1,
+        "rate": 200,
+        "date": "2025-06-18",
+        "createdAt": "2025-06-18T16:06:09.066Z"
+      }
+    ],
+    "payments": [],
+    "createdAt": "2025-06-18T16:04:46.221Z"
+  },
+  "entries": [
+    {
+      "id": 1750262769066,
+      "type": "delivery",
+      "fromDate": "2025-06-18",
+      "toDate": "2025-06-18",
+      "liters": 1,
+      "rate": 200,
+      "date": "2025-06-18",
+      "createdAt": "2025-06-18T16:06:09.066Z"
+    }
+  ],
+  "payments": [],
+  "lastUpdated": "2025-06-19T10:46:13.673Z",
+  "backupDate": "2025-06-19"
+}
