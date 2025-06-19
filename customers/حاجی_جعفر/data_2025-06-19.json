@@ -2,62 +2,56 @@
   "customerInfo": {
     "id": 2,
     "name": "حاجی جعفر",
-    "phone": "03001212345",
+    "phone": "03000000000",
     "defaultRate": 200,
     "entries": [
       {
-        "id": 1750323403581,
+        "id": 1750262798123,
         "type": "delivery",
-        "month": "2024-06",
-        "fromDate": "2025-06-18",
-        "toDate": "2025-06-30",
-        "liters": 4,
-        "rate": 200,
-        "date": "2025-06-18",
-        "createdAt": "2025-06-19T08:56:43.581Z",
-        "updatedAt": "2025-06-19T10:17:40.087Z"
-      },
-      {
-        "id": 1750321612758,
-        "type": "delivery",
-        "month": "2024-06",
         "fromDate": "2025-06-01",
         "toDate": "2025-06-17",
         "liters": 5,
         "rate": 200,
         "date": "2025-06-01",
-        "createdAt": "2025-06-19T08:26:52.758Z"
+        "createdAt": "2025-06-18T16:06:38.123Z"
+      },
+      {
+        "id": 1750262804222,
+        "type": "delivery",
+        "fromDate": "2025-06-18",
+        "toDate": "2025-06-18",
+        "liters": 4,
+        "rate": 200,
+        "date": "2025-06-18",
+        "createdAt": "2025-06-18T16:06:44.223Z"
       }
     ],
     "payments": [],
-    "createdAt": "2025-06-18T16:53:50.897Z"
+    "createdAt": "2025-06-18T16:05:02.052Z"
   },
   "entries": [
     {
-      "id": 1750323403581,
+      "id": 1750262798123,
       "type": "delivery",
-      "month": "2024-06",
-      "fromDate": "2025-06-18",
-      "toDate": "2025-06-30",
-      "liters": 4,
-      "rate": 200,
-      "date": "2025-06-18",
-      "createdAt": "2025-06-19T08:56:43.581Z",
-      "updatedAt": "2025-06-19T10:17:40.087Z"
-    },
-    {
-      "id": 1750321612758,
-      "type": "delivery",
-      "month": "2024-06",
       "fromDate": "2025-06-01",
       "toDate": "2025-06-17",
       "liters": 5,
       "rate": 200,
       "date": "2025-06-01",
-      "createdAt": "2025-06-19T08:26:52.758Z"
+      "createdAt": "2025-06-18T16:06:38.123Z"
+    },
+    {
+      "id": 1750262804222,
+      "type": "delivery",
+      "fromDate": "2025-06-18",
+      "toDate": "2025-06-18",
+      "liters": 4,
+      "rate": 200,
+      "date": "2025-06-18",
+      "createdAt": "2025-06-18T16:06:44.223Z"
     }
   ],
   "payments": [],
-  "lastUpdated": "2025-06-19T10:43:52.065Z",
+  "lastUpdated": "2025-06-19T10:46:24.110Z",
   "backupDate": "2025-06-19"
 }
