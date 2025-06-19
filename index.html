@@ -823,7 +823,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn" onclick="saveToStorage(); backupToGitHub();">🔄 فوری بیک اپ</button>
+                            <button class="btn" onclick="saveToStorage(); setTimeout(() => backupToGitHub(), 500);">🔄 فوری بیک اپ</button>
                         </div>
                     </div>
                 </div>
@@ -1069,25 +1069,64 @@
             updateBackupStatus('GitHub میں بیک اپ کر رہے ہیں...', 'syncing');
             
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+                
+                // First verify the repository exists and we have access
+                const repoResponse = await fetch(`https://api.github.com/repos/${repo}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'MilkBusinessApp',
+                        'X-GitHub-Api-Version': '2022-11-28'
+                    },
+                    signal: controller.signal,
+                    mode: 'cors'
+                });
+                
+                if (repoResponse.status === 404) {
+                    clearTimeout(timeoutId);
+                    updateBackupStatus('GitHub بیک اپ: ریپو نہیں ملا', 'error');
+                    showNotification('GitHub repository نہیں ملا۔ صحیح نام چیک کریں۔', 'error');
+                    return;
+                }
+                
+                if (repoResponse.status === 403) {
+                    clearTimeout(timeoutId);
+                    updateBackupStatus('GitHub بیک اپ: اجازت نہیں', 'error');
+                    showNotification('GitHub token میں permissions کی کمی۔ repo access چیک کریں۔', 'error');
+                    return;
+                }
+                
+                if (!repoResponse.ok) {
+                    clearTimeout(timeoutId);
+                    throw new Error(`Repository access failed: ${repoResponse.status}`);
+                }
+                
                 const data = {
                     customers: customers,
                     nextId: nextId,
                     lastSync: new Date().toISOString(),
-                    version: '2.0'
+                    version: '2.0',
+                    appName: 'دودھ کا کاروبار'
                 };
                 
-                // Fix encoding issue for Urdu text
+                // Prepare content with proper encoding
                 const jsonString = JSON.stringify(data, null, 2);
                 const content = btoa(unescape(encodeURIComponent(jsonString)));
                 
-                // Get current file SHA if exists
+                // Check if file exists to get SHA
                 let sha = null;
                 try {
                     const getResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${filename}`, {
                         headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'User-Agent': 'MilkBusinessApp',
+                            'X-GitHub-Api-Version': '2022-11-28'
+                        },
+                        signal: controller.signal,
+                        mode: 'cors'
                     });
                     
                     if (getResponse.ok) {
@@ -1095,12 +1134,13 @@
                         sha = fileData.sha;
                     }
                 } catch (e) {
-                    // File doesn't exist, that's ok
+                    // File doesn't exist, will create new
                 }
                 
                 const requestBody = {
                     message: `Milk Business Backup - ${new Date().toLocaleString('en-US')}`,
-                    content: content
+                    content: content,
+                    branch: 'main'
                 };
                 
                 if (sha) {
@@ -1110,12 +1150,30 @@
                 const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filename}`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `token ${token}`,
+                        'Authorization': `Bearer ${token}`,
                         'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'MilkBusinessApp',
+                        'X-GitHub-Api-Version': '2022-11-28'
                     },
-                    body: JSON.stringify(requestBody)
+                    body: JSON.stringify(requestBody),
+                    signal: controller.signal,
+                    mode: 'cors'
                 });
+                
+                clearTimeout(timeoutId);
+                
+                if (response.status === 403) {
+                    updateBackupStatus('GitHub بیک اپ: اجازت نہیں', 'error');
+                    showNotification('GitHub token میں write permission نہیں ہے', 'error');
+                    return;
+                }
+                
+                if (response.status === 404) {
+                    updateBackupStatus('GitHub بیک اپ: برانچ نہیں ملی', 'error');
+                    showNotification('main branch نہیں ملی۔ repository چیک کریں', 'error');
+                    return;
+                }
                 
                 if (response.ok) {
                     localStorage.setItem('last-github-sync', new Date().toISOString());
@@ -1123,13 +1181,21 @@
                     updateBackupStatus('GitHub بیک اپ: کامیاب', 'success');
                     showNotification('GitHub بیک اپ کامیاب!', 'success');
                 } else {
-                    throw new Error(`HTTP ${response.status}`);
+                    const errorData = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorData}`);
                 }
                 
             } catch (error) {
                 console.error('GitHub sync failed:', error);
                 updateBackupStatus('GitHub بیک اپ: ناکام', 'error');
-                showNotification('GitHub بیک اپ ناکام: ' + error.message, 'error');
+                
+                if (error.name === 'AbortError') {
+                    showNotification('GitHub بیک اپ timeout - انٹرنیٹ کنکشن چیک کریں', 'error');
+                } else if (error.message.includes('Failed to fetch')) {
+                    showNotification('نیٹ ورک کی خرابی - انٹرنیٹ کنکشن چیک کریں', 'error');
+                } else {
+                    showNotification('GitHub بیک اپ ناکام: ' + error.message, 'error');
+                }
             }
         }
 
@@ -1148,14 +1214,21 @@
             try {
                 const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filename}`, {
                     headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'MilkBusinessApp/1.0'
                     }
                 });
                 
                 if (response.status === 404) {
-                    updateBackupStatus('GitHub بیک اپ: فائل نہیں ملی', 'error');
+                    updateBackupStatus('GitHub بحالی: فائل نہیں ملی', 'error');
                     showNotification('GitHub میں کوئی بیک اپ فائل نہیں ملی۔ پہلے بیک اپ بنائیں۔', 'error');
+                    return;
+                }
+                
+                if (response.status === 403) {
+                    updateBackupStatus('GitHub بحالی: اجازت نہیں', 'error');
+                    showNotification('GitHub access کی permission نہیں ہے', 'error');
                     return;
                 }
                 
@@ -1666,12 +1739,16 @@
                 
                 const paymentStatus = getPaymentStatus(customer);
                 const total = calculateCustomerTotal(customer.id);
+                const totalPaid = customer.payments ? customer.payments.reduce((sum, payment) => sum + parseFloat(payment.amount), 0) : 0;
+                const remaining = total - totalPaid;
                 
                 card.innerHTML = `
                     <div class="payment-status ${paymentStatus.class}">${paymentStatus.text}</div>
                     <h3>${customer.name}</h3>
                     <p>📞 ${customer.phone || 'فون نمبر موجود نہیں'}</p>
                     <p>💰 کل: ${total} روپے</p>
+                    <p>💳 ادا شدہ: ${totalPaid} روپے</p>
+                    <p>📋 باقی: ${remaining} روپے</p>
                 `;
                 
                 grid.appendChild(card);
@@ -2233,6 +2310,11 @@
                 });
             }
 
+            // Calculate payments for current customer
+            const customer = customers.find(c => c.id === currentCustomerId);
+            const totalPaid = customer && customer.payments ? customer.payments.reduce((sum, payment) => sum + parseFloat(payment.amount), 0) : 0;
+            const remainingAmount = totalAmount - totalPaid;
+
             document.getElementById('bill-summary').innerHTML = `
                 <h3>📋 بل کا خلاصہ</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
@@ -2247,6 +2329,14 @@
                     <div style="text-align: center; background: white; padding: 15px; border-radius: 10px;">
                         <div style="font-size: 1.5em; color: #ff9800; font-weight: bold;">${totalAmount} روپے</div>
                         <div>کل رقم</div>
+                    </div>
+                    <div style="text-align: center; background: white; padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5em; color: #4CAF50; font-weight: bold;">${totalPaid} روپے</div>
+                        <div>ادا شدہ</div>
+                    </div>
+                    <div style="text-align: center; background: white; padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5em; color: #f44336; font-weight: bold;">${remainingAmount} روپے</div>
+                        <div>باقی رقم</div>
                     </div>
                 </div>
             `;
