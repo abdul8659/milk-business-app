@@ -119,7 +119,6 @@
             min-height: 500px;
         }
 
-        /* Rest of the existing styles remain the same... */
         .controls-section {
             display: flex;
             gap: 15px;
@@ -130,35 +129,40 @@
 
         .search-box {
             flex: 1;
-            min-width: 250px;
-            padding: 12px;
+            min-width: 200px;
+            padding: 12px 20px;
             border: 2px solid #e0e0e0;
             border-radius: 25px;
             font-size: 16px;
-            direction: rtl;
+            transition: all 0.3s ease;
         }
 
         .search-box:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .customers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
             margin-top: 20px;
         }
 
         .customer-card {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             cursor: pointer;
             transition: transform 0.3s ease;
             position: relative;
             overflow: hidden;
+        }
+
+        .customer-card:hover {
+            transform: translateY(-5px);
         }
 
         .customer-card::before {
@@ -169,188 +173,60 @@
             width: 100%;
             height: 100%;
             background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .customer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
         }
 
         .customer-card:hover::before {
-            top: -25%;
-            right: -25%;
+            right: -40%;
         }
 
-        .customer-card h3 {
-            font-size: 1.6em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-            color: #1a1a1a;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .customer-card p {
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-            margin: 5px 0;
-            font-size: 0.9em;
+        .add-customer-card {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+            text-align: center;
         }
 
         .payment-status {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 2;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.7em;
-            font-weight: bold;
-        }
-
-        .status-paid { background: #4CAF50; color: white; }
-        .status-pending { background: #FF9800; color: white; }
-        .status-overdue { background: #f44336; color: white; }
-
-        .add-customer-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            border: none;
-            padding: 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .add-customer-btn:hover {
-            transform: translateY(-5px);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-            direction: ltr;
-        }
-
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.3s ease;
-            margin: 5px;
-        }
-
-        .btn:hover { transform: translateY(-2px); }
-        .btn-success { background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%); }
-        .btn-danger { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
-        .btn-warning { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
-        .btn-info { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
+            top: 15px;
+            left: 15px;
+            padding: 5px 12px;
             border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .close-btn {
-            float: left;
-            font-size: 28px;
+            font-size: 0.8em;
             font-weight: bold;
-            cursor: pointer;
-            color: #999;
         }
 
-        .close-btn:hover { color: #333; }
+        .payment-status.paid {
+            background: rgba(76, 175, 80, 0.9);
+        }
 
-        .section-title {
-            color: #333;
+        .payment-status.partial {
+            background: rgba(255, 152, 0, 0.9);
+        }
+
+        .payment-status.pending {
+            background: rgba(244, 67, 54, 0.9);
+        }
+
+        .ledger-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            font-size: 1.5em;
-            text-align: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+        .ledger-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
-
-        .stat-card {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .hidden { display: none; }
 
         .ledger-entries {
             max-height: 400px;
@@ -366,11 +242,64 @@
             margin-bottom: 10px;
             border-radius: 10px;
             border-left: 4px solid #667eea;
+            position: relative;
         }
 
         .entry-item.day-off {
             border-left-color: #ff416c;
             background: #fff5f5;
+        }
+
+        .entry-item.payment {
+            border-left-color: #4CAF50;
+            background: #f1f8e9;
+        }
+
+        /* Entry Action Buttons - Small and positioned in front */
+        .entry-actions {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 3px;
+            z-index: 10;
+        }
+
+        .entry-action-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            transition: all 0.2s ease;
+            color: white;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background: #2196F3;
+        }
+
+        .edit-btn:hover {
+            background: #1976D2;
+            transform: scale(1.1);
+        }
+
+        .delete-btn {
+            background: #f44336;
+        }
+
+        .delete-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.1);
+        }
+
+        .entry-content {
+            margin-left: 85px; /* Make space for buttons */
         }
 
         .online-features {
@@ -393,303 +322,360 @@
             border: 2px solid #4CAF50;
             border-radius: 15px;
             padding: 20px;
+            margin: 20px 0;
+        }
+
+        .backup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .backup-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .github-config {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+
+        .status-online { background: #4CAF50; }
+        .status-offline { background: #f44336; }
+        .status-syncing { background: #ff9800; animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn.whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .btn.pdf {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        }
+
+        .btn.payment {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        }
+
+        .btn.holiday {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
 
-        /* Mobile Optimization */
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-title {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .report-filters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
         @media (max-width: 768px) {
-            .container { padding: 5px; }
-            .header h1 { font-size: 1.8em; }
-            .main-nav { gap: 5px; }
-            .nav-btn { padding: 8px 15px; font-size: 12px; }
-            .customers-grid { grid-template-columns: 1fr; }
-            .controls-section { flex-direction: column; }
-            .search-box { min-width: auto; }
-            .customer-card { padding: 15px; }
-            .customer-card h3 { font-size: 1.4em; }
-            .modal-content { padding: 20px; margin: 10px; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .container {
+                padding: 5px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .customers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-nav {
+                gap: 5px;
+            }
+            
+            .nav-btn {
+                min-width: 100px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+
+            .entry-content {
+                margin-left: 75px;
+            }
+
+            .ledger-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .ledger-actions {
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Backup Status Indicator -->
-    <div id="backup-status" class="backup-status">
-        🔄 آنلائن بیک اپ تیار ہے
+    <div class="backup-status" id="backup-status">
+        <span class="status-indicator status-online"></span>
+        آٹو بیک اپ: فعال
     </div>
 
     <div class="container">
         <div class="header">
             <h1>🥛 دودھ کا کاروبار</h1>
-            <p>مکمل آنلائن کاروباری حل - Advanced Online Business Management</p>
+            <p>Complete Online Business Solution with Enhanced Features</p>
         </div>
 
-        <div class="main-nav">
-            <button class="nav-btn active" onclick="showDashboard()">📊 ڈیش بورڈ</button>
-            <button class="nav-btn" onclick="showCustomers()">👥 گاہک</button>
-            <button class="nav-btn" onclick="showReports()">📋 رپورٹس</button>
-            <button class="nav-btn" onclick="showBackupManagement()">☁️ آنلائن بیک اپ</button>
-            <button class="nav-btn" onclick="showDataManagement()">💾 ڈیٹا منیجمنٹ</button>
-        </div>
+        <nav class="main-nav">
+            <button class="nav-btn active" onclick="showCustomers()">
+                👥 گاہک
+            </button>
+            <button class="nav-btn" onclick="showReports()">
+                📊 رپورٹس
+            </button>
+            <button class="nav-btn" onclick="showBackupManagement()">
+                ☁️ آن لائن بیک اپ
+            </button>
+            <button class="nav-btn" onclick="showDataManagement()">
+                🗂️ ڈیٹا منیجمنٹ
+            </button>
+            <button class="nav-btn" onclick="showDashboard()">
+                📈 ڈیش بورڈ
+            </button>
+        </nav>
 
         <div class="content-area">
             <!-- Dashboard Section -->
-            <div id="dashboard-section">
-                <h2 class="section-title">📊 ڈیش بورڈ - کاروبار کا خلاصہ</h2>
+            <div id="dashboard-section" class="hidden">
+                <h2 class="section-title">📈 کاروباری ڈیش بورڈ</h2>
                 
-                <!-- Main Stats Grid -->
                 <div class="stats-grid">
-                    <div class="stat-card" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);">
-                        <div class="stat-value" id="total-customers">0</div>
-                        <div>کل گاہک</div>
+                    <div class="stat-card">
+                        <h3 id="total-customers-stat">0</h3>
+                        <p>کل گاہک</p>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);">
-                        <div class="stat-value" id="total-revenue">0</div>
-                        <div>اس مہینے کی فروخت</div>
+                    <div class="stat-card">
+                        <h3 id="total-revenue-stat">0</h3>
+                        <p>کل آمدنی</p>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
-                        <div class="stat-value" id="total-received">0</div>
-                        <div>اس مہینے وصول شدہ</div>
+                    <div class="stat-card">
+                        <h3 id="total-payments-stat">0</h3>
+                        <p>وصول شدہ</p>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
-                        <div class="stat-value" id="total-pending">0</div>
-                        <div>اس مہینے باقی رقم</div>
+                    <div class="stat-card">
+                        <h3 id="pending-amount-stat">0</h3>
+                        <p>باقی رقم</p>
                     </div>
                 </div>
 
-                <!-- Quick Actions -->
-                <div style="margin: 30px 0;">
-                    <h3 style="color: #667eea; margin-bottom: 20px; text-align: center;">🚀 فوری رسائی</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                        
-                        <div class="customer-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); cursor: pointer;" onclick="showCustomers()">
-                            <h3 style="color: white; text-shadow: none;">👥 گاہکوں کا انتظام</h3>
-                            <p style="color: white; opacity: 0.9;">• نئے گاہک شامل کریں</p>
-                            <p style="color: white; opacity: 0.9;">• گاہکوں کی فہرست دیکھیں</p>
-                            <p style="color: white; opacity: 0.9;">• پیمنٹ کی صورتحال</p>
-                        </div>
-
-                        <div class="customer-card" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); cursor: pointer;" onclick="showReports()">
-                            <h3 style="color: white; text-shadow: none;">📊 تفصیلی رپورٹس</h3>
-                            <p style="color: white; opacity: 0.9;">• ماہانہ اور سالانہ رپورٹ</p>
-                            <p style="color: white; opacity: 0.9;">• PDF ڈاؤن لوڈ</p>
-                            <p style="color: white; opacity: 0.9;">• گاہک کی رپورٹ</p>
-                        </div>
-
-                        <div class="customer-card" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); cursor: pointer;" onclick="showBackupManagement()">
-                            <h3 style="color: white; text-shadow: none;">☁️ آنلائن بیک اپ</h3>
-                            <p style="color: white; opacity: 0.9;">• GitHub میں محفوظ کریں</p>
-                            <p style="color: white; opacity: 0.9;">• خودکار بیک اپ</p>
-                            <p style="color: white; opacity: 0.9;">• ڈیٹا کی بحالی</p>
-                        </div>
-
-                        <div class="customer-card" style="background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%); cursor: pointer;" onclick="showAddCustomerModal()">
-                            <h3 style="color: white; text-shadow: none;">➕ نیا گاہک</h3>
-                            <p style="color: white; opacity: 0.9;">• تیزی سے گاہک شامل کریں</p>
-                            <p style="color: white; opacity: 0.9;">• مکمل معلومات</p>
-                            <p style="color: white; opacity: 0.9;">• ڈیفالٹ ریٹ سیٹ کریں</p>
-                        </div>
-
+                <div class="online-features">
+                    <h3>🌐 آن لائن فیچرز</h3>
+                    <p>یہ ایپ مکمل طور پر آن لائن کام کرتی ہے اور آپ کا ڈیٹا محفوظ رکھتی ہے۔</p>
+                    <div class="pdf-actions">
+                        <button class="btn pdf" onclick="generateComprehensivePDF()">📄 مکمل PDF رپورٹ</button>
+                        <button class="btn pdf" onclick="generateMonthlyPDF()">📅 ماہانہ PDF</button>
+                        <button class="btn pdf" onclick="saveAllPDFsOnline()">☁️ تمام PDFs آن لائن محفوظ کریں</button>
                     </div>
                 </div>
             </div>
 
             <!-- Customers Section -->
-            <div id="customers-section" class="hidden">
+            <div id="customers-section">
                 <div class="controls-section">
-                    <input type="text" class="search-box" id="customer-search" placeholder="🔍 گاہک تلاش کریں (نام یا فون نمبر)..." onkeyup="searchCustomers()">
-                    <button class="btn btn-success" onclick="showAddCustomerModal()">+ نیا گاہک</button>
+                    <input type="text" class="search-box" id="customer-search" placeholder="گاہک تلاش کریں..." onkeyup="searchCustomers()">
+                    <button class="btn success" onclick="showAddCustomerModal()">➕ نیا گاہک شامل کریں</button>
                 </div>
-                
                 <div class="customers-grid" id="customers-grid">
-                    <!-- Customers will be displayed here -->
+                    <!-- Customers will be loaded here -->
                 </div>
             </div>
 
-            <!-- Reports Section -->
-            <div id="reports-section" class="hidden">
-                <h2 class="section-title">📊 رپورٹس اور PDF جنریشن</h2>
-                
-                <div class="online-features">
-                    <h3 style="margin-bottom: 20px;">📄 PDF خصوصیات</h3>
-                    <div class="pdf-actions">
-                        <button class="btn" onclick="generateComprehensivePDF()" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
-                            📑 مکمل ڈیٹا PDF
-                        </button>
-                        <button class="btn" onclick="generateMonthlyPDF()" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">
-                            📅 ماہانہ PDF
-                        </button>
-                        <button class="btn" onclick="generateCustomerPDF()" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">
-                            👤 گاہک کی PDF
-                        </button>
-                        <button class="btn" onclick="saveAllPDFsOnline()" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
-                            ☁️ آنلائن محفوظ کریں
-                        </button>
-                    </div>
-                </div>
-
-                <div style="background: #f8f9fa; border-radius: 15px; padding: 20px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">فلٹر اور رپورٹ کی قسم</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
-                        <div class="form-group">
-                            <label>رپورٹ کی قسم:</label>
-                            <select id="report-type">
-                                <option value="monthly">ماہانہ رپورٹ</option>
-                                <option value="yearly">سالانہ رپورٹ</option>
-                                <option value="customer">گاہک رپورٹ</option>
-                                <option value="comprehensive">مکمل رپورٹ</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>شروعاتی تاریخ:</label>
-                            <input type="date" id="report-start-date">
-                        </div>
-                        <div class="form-group">
-                            <label>اختتامی تاریخ:</label>
-                            <input type="date" id="report-end-date">
-                        </div>
-                        <div class="form-group">
-                            <label style="opacity: 0;">Generate</label>
-                            <button class="btn btn-info" onclick="generateReport()" style="width: 100%;">📊 رپورٹ بنائیں</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="report-results" style="display: none; background: #f8f9fa; border-radius: 15px; padding: 20px; margin-top: 20px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">رپورٹ کے نتائج</h3>
-                    <div id="report-content">
-                        <!-- Report content will be generated here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Online Backup Management Section -->
-            <div id="backup-management-section" class="hidden">
-                <h2 class="section-title">☁️ آنلائن بیک اپ منیجمنٹ</h2>
-                
-                <div class="backup-section">
-                    <h3 style="color: #4CAF50; margin-bottom: 20px;">🔒 GitHub Integration</h3>
-                    <div class="form-group">
-                        <label>GitHub Personal Access Token:</label>
-                        <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-                        <small style="color: #666; display: block; margin-top: 5px;">
-                            GitHub Settings > Developer settings > Personal access tokens سے ٹوکن بنائیں
-                        </small>
-                    </div>
-                    <div class="form-group">
-                        <label>Repository Name:</label>
-                        <input type="text" id="github-repo" placeholder="milk-business-backup" value="milk-business-backup">
-                    </div>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-success" onclick="setupGitHubBackup()">🔧 GitHub سیٹ اپ</button>
-                        <button class="btn btn-info" onclick="backupToGitHub()">☁️ فوری بیک اپ</button>
-                        <button class="btn btn-warning" onclick="restoreFromGitHub()">⬇️ بحالی</button>
-                        <button class="btn" onclick="testGitHubConnection()" style="background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);">🔗 کنکشن ٹیسٹ</button>
-                    </div>
-                </div>
-
-                <div class="backup-section">
-                    <h3 style="color: #FF9800; margin-bottom: 20px;">📊 بیک اپ کی تفصیلات</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value" id="last-backup-time">کبھی نہیں</div>
-                            <div>آخری بیک اپ</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="backup-size">0 KB</div>
-                            <div>ڈیٹا سائز</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="backup-count">0</div>
-                            <div>کل بیک اپس</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="github-status">❌</div>
-                            <div>GitHub Status</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="backup-section">
-                    <h3 style="color: #2196F3; margin-bottom: 20px;">⚙️ خودکار بیک اپ ترتیبات</h3>
-                    <div class="form-group">
-                        <label>خودکار بیک اپ:</label>
-                        <select id="auto-backup-frequency">
-                            <option value="0">بند</option>
-                            <option value="5">ہر 5 منٹ</option>
-                            <option value="15">ہر 15 منٹ</option>
-                            <option value="30">ہر 30 منٹ</option>
-                            <option value="60">ہر گھنٹے</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-success" onclick="updateAutoBackupSettings()">محفوظ کریں</button>
-                </div>
-            </div>
-
-            <!-- Data Management Section -->
-            <div id="data-management-section" class="hidden">
-                <h2 class="section-title">💾 ڈیٹا منیجمنٹ</h2>
-                
-                <div class="online-features">
-                    <h3 style="margin-bottom: 20px;">📁 فائل منیجمنٹ</h3>
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-                        <button class="btn" onclick="exportData()" style="background: rgba(255,255,255,0.2);">
-                            📤 JSON ایکسپورٹ
-                        </button>
-                        <label for="import-file" style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 10px; cursor: pointer; color: white;">
-                            📥 JSON امپورٹ
-                        </label>
-                        <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
-                        <button class="btn" onclick="clearAllData()" style="background: rgba(255,0,0,0.3);">
-                            🗑️ تمام ڈیٹا صاف کریں
-                        </button>
-                    </div>
-                </div>
-
-                <div style="background: #f8f9fa; border-radius: 15px; padding: 20px; margin-top: 20px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">📊 ڈیٹا کی تفصیلات</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value" id="total-customers-data">0</div>
-                            <div>کل گاہک</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="total-entries-data">0</div>
-                            <div>کل انٹریز</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="total-payments-data">0</div>
-                            <div>کل پیمنٹس</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="data-size">0</div>
-                            <div>ڈیٹا سائز (KB)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Customer Ledger Section -->
+            <!-- Ledger Section -->
             <div id="ledger-section" class="hidden">
-                <button class="btn" onclick="showCustomers()">&rarr; واپس</button>
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 25px; text-align: center;">
-                    <h2 id="ledger-customer-name">گاہک کا نام</h2>
-                    <p id="ledger-customer-phone">فون نمبر</p>
+                <div class="ledger-header">
+                    <h2 id="ledger-title">گاہک کھاتہ</h2>
+                    <div class="ledger-actions">
+                        <button class="btn success" onclick="showAddEntryModal()">➕ نئی انٹری</button>
+                        <button class="btn whatsapp" onclick="shareOnWhatsApp()">📱 WhatsApp</button>
+                        <button class="btn pdf" onclick="generateCustomerPDF()">📄 PDF رپورٹ</button>
+                        <button class="btn payment" onclick="showPaymentModal()">💰 رقم وصول کریں</button>
+                        <button class="btn holiday" onclick="showDayOffModal()">🚫 چھٹی کا دن</button>
+                        <button class="btn" onclick="showCustomers()">⬅️ واپس</button>
+                    </div>
                 </div>
-
-                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                    <button class="btn btn-success" onclick="showAddEntryModal()">+ نئی انٹری</button>
-                    <button class="btn btn-danger" onclick="showDayOffModal()">چھٹی کا دن</button>
-                    <button class="btn btn-warning" onclick="showPaymentModal()">💰 رقم وصول کریں</button>
-                    <button class="btn btn-info" onclick="generateCustomerPDFReport()">📄 PDF رپورٹ</button>
-                    <button class="btn" onclick="shareOnWhatsApp()" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);">📱 WhatsApp</button>
-                </div>
-
-                <!-- Monthly Filter -->
+                
                 <div style="margin-bottom: 20px;">
-                    <label style="margin-left: 10px; font-weight: bold;">مہینہ منتخب کریں:</label>
-                    <select id="month-filter" onchange="filterByMonth()" style="padding: 8px; border-radius: 5px;">
-                        <option value="all">تمام انٹریز</option>
+                    <label for="month-filter">مہینہ منتخب کریں:</label>
+                    <select id="month-filter" onchange="loadLedgerEntries(currentCustomerId)" style="margin-right: 10px; padding: 8px; border-radius: 5px;">
+                        <option value="all">تمام مہینے</option>
+                        <option value="2024-01">جنوری 2024</option>
+                        <option value="2024-02">فروری 2024</option>
+                        <option value="2024-03">مارچ 2024</option>
+                        <option value="2024-04">اپریل 2024</option>
+                        <option value="2024-05">مئی 2024</option>
+                        <option value="2024-06">جون 2024</option>
+                        <option value="2024-07">جولائی 2024</option>
+                        <option value="2024-08">اگست 2024</option>
+                        <option value="2024-09">ستمبر 2024</option>
+                        <option value="2024-10">اکتوبر 2024</option>
+                        <option value="2024-11">نومبر 2024</option>
+                        <option value="2024-12">دسمبر 2024</option>
                         <option value="2025-01">جنوری 2025</option>
                         <option value="2025-02">فروری 2025</option>
                         <option value="2025-03">مارچ 2025</option>
@@ -705,99 +691,218 @@
                     </select>
                 </div>
 
-                <!-- Bill Summary -->
-                <div id="bill-summary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                    <h3 style="text-align: center; margin-bottom: 15px;">بل کا خلاصہ</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5em; font-weight: bold;" id="summary-total-liters">0</div>
-                            <div>کل لیٹر</div>
+                <div class="ledger-entries" id="ledger-entries">
+                    <!-- Entries will be loaded here -->
+                </div>
+
+                <div id="bill-summary" style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <!-- Bill summary will be shown here -->
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div id="reports-section" class="hidden">
+                <h2 class="section-title">📊 رپورٹس اور تجزیہ</h2>
+                
+                <div class="report-filters">
+                    <h3>رپورٹ فلٹرز</h3>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>شروع کی تاریخ:</label>
+                            <input type="date" id="report-start-date">
                         </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5em; font-weight: bold;" id="summary-total-days">0</div>
-                            <div>کل دن</div>
+                        <div class="filter-group">
+                            <label>اختتام کی تاریخ:</label>
+                            <input type="date" id="report-end-date">
                         </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5em; font-weight: bold;" id="summary-total-amount">0</div>
-                            <div>کل رقم (روپے)</div>
+                        <div class="filter-group">
+                            <label>رپورٹ کی قسم:</label>
+                            <select id="report-type">
+                                <option value="all">تمام</option>
+                                <option value="revenue">آمدنی</option>
+                                <option value="payments">ادائیگیاں</option>
+                                <option value="pending">باقیات</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <button class="btn" onclick="generateReport()">رپورٹ بنائیں</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="ledger-entries" id="ledger-entries">
-                    <!-- Ledger entries will be displayed here -->
+                <div id="report-results">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="background: #e8f5e8; padding: 20px; border-radius: 10px;">
+                            <h3>کل آمدنی</h3>
+                            <p style="font-size: 2em; color: #4CAF50;" id="total-revenue">0 روپے</p>
+                        </div>
+                        <div style="background: #fff3e0; padding: 20px; border-radius: 10px;">
+                            <h3>کل گاہک</h3>
+                            <p style="font-size: 2em; color: #ff9800;" id="total-customers">0</p>
+                        </div>
+                        <div style="background: #e3f2fd; padding: 20px; border-radius: 10px;">
+                            <h3>اس ماہ آمدنی</h3>
+                            <p style="font-size: 2em; color: #2196F3;" id="monthly-revenue">0 روپے</p>
+                        </div>
+                        <div style="background: #fce4ec; padding: 20px; border-radius: 10px;">
+                            <h3>وصول شدہ رقم</h3>
+                            <p style="font-size: 2em; color: #e91e63;" id="total-received">0 روپے</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Backup Management Section -->
+            <div id="backup-management-section" class="hidden">
+                <h2 class="section-title">☁️ بیک اپ اور ڈیٹا محفوظیت</h2>
+                
+                <div class="backup-grid">
+                    <!-- Local Storage Card -->
+                    <div class="backup-card">
+                        <h3>📱 لوکل بیک اپ</h3>
+                        <p>آپ کا ڈیٹا موبائل میں محفوظ کریں</p>
+                        <div style="margin: 15px 0;">
+                            <div>آخری بیک اپ: <span id="local-backup-time">کبھی نہیں</span></div>
+                            <div>ڈیٹا ساائز: <span id="data-size">0 KB</span></div>
+                        </div>
+                        <div>
+                            <button class="btn" onclick="exportData()">📥 ڈاؤن لوڈ</button>
+                            <button class="btn" onclick="document.getElementById('import-input').click()">📤 اپ لوڈ</button>
+                            <input type="file" id="import-input" accept=".json" onchange="importData(event)" style="display: none;">
+                        </div>
+                    </div>
+
+                    <!-- GitHub Backup Card -->
+                    <div class="backup-card">
+                        <h3>🌐 GitHub بیک اپ</h3>
+                        <p>آن لائن محفوظ بیک اپ</p>
+                        <div id="github-status" style="margin: 15px 0;">
+                            <div>حالت: <span class="status-indicator status-offline"></span>غیر فعال</div>
+                            <div>آخری سنک: <span id="github-sync-time">کبھی نہیں</span></div>
+                        </div>
+                        
+                        <div class="github-config">
+                            <div class="form-group">
+                                <label>GitHub Token:</label>
+                                <input type="password" id="github-token" placeholder="آپ کا GitHub Personal Access Token">
+                            </div>
+                            <div class="form-group">
+                                <label>Repository:</label>
+                                <input type="text" id="github-repo" placeholder="username/repository-name">
+                            </div>
+                            <div class="form-group">
+                                <label>File Name:</label>
+                                <input type="text" id="github-filename" value="milk-business-backup.json">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <button class="btn" onclick="testGitHubConnection()">🔗 کنکشن ٹیسٹ</button>
+                            <button class="btn" onclick="backupToGitHub()">☁️ GitHub میں بیک اپ</button>
+                            <button class="btn" onclick="restoreFromGitHub()">📥 GitHub سے بحالی</button>
+                        </div>
+                    </div>
+
+                    <!-- Auto Backup Card -->
+                    <div class="backup-card">
+                        <h3>⚡ آٹو بیک اپ</h3>
+                        <p>خودکار طور پر ڈیٹا محفوظ کریں</p>
+                        <div style="margin: 15px 0;">
+                            <label>
+                                <input type="checkbox" id="auto-backup-enabled" onchange="updateAutoBackupSettings()"> 
+                                آٹو بیک اپ فعال کریں
+                            </label>
+                            <div style="margin-top: 10px;">
+                                <label>وقفہ:</label>
+                                <select id="backup-interval" onchange="updateAutoBackupSettings()">
+                                    <option value="300000">5 منٹ</option>
+                                    <option value="600000">10 منٹ</option>
+                                    <option value="1800000">30 منٹ</option>
+                                    <option value="3600000">1 گھنٹہ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn" onclick="saveToStorage(); backupToGitHub();">🔄 فوری بیک اپ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 10px;">
+                    <h4>⚠️ اہم ہدایات:</h4>
+                    <ul style="margin-top: 10px; text-align: right;">
+                        <li>GitHub Token بنانے کے لیے: GitHub Settings > Developer Settings > Personal Access Tokens</li>
+                        <li>Repository permissions میں 'repo' کو منظور کریں</li>
+                        <li>آٹو بیک اپ فعال کرنے سے آپ کا ڈیٹا محفوظ رہے گا</li>
+                        <li>لوکل بیک اپ فائل کو محفوظ جگہ رکھیں</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Data Management Section -->
+            <div id="data-management-section" class="hidden">
+                <h2 class="section-title">🗂️ ڈیٹا منیجمنٹ</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; border: 2px solid #4CAF50;">
+                        <h3 style="color: #4CAF50;">📊 ڈیٹا کی تفصیلات</h3>
+                        <div id="data-stats">
+                            <p>کل گاہک: <span id="stats-customers">0</span></p>
+                            <p>کل انٹریاں: <span id="stats-entries">0</span></p>
+                            <p>کل ادائیگیاں: <span id="stats-payments">0</span></p>
+                            <p>ڈیٹا ساائز: <span id="stats-size">0 KB</span></p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #ffebee; padding: 20px; border-radius: 10px; border: 2px solid #f44336;">
+                        <h3 style="color: #f44336;">⚠️ خطرناک ایکشنز</h3>
+                        <p style="margin: 10px 0;">یہ عمل واپس نہیں ہو سکتا</p>
+                        <button class="btn" onclick="clearAllData()" style="background: #f44336; margin-top: 10px;">🗑️ تمام ڈیٹا صاف کریں</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modals -->
     <!-- Add Customer Modal -->
     <div id="add-customer-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 class="section-title">نیا گاہک شامل کریں</h3>
-            <form id="add-customer-form" onsubmit="return false;">
-                <div class="form-group">
-                    <label>گاہک کا نام: *</label>
-                    <input type="text" id="customer-name" required>
-                </div>
-                <div class="form-group">
-                    <label>فون نمبر:</label>
-                    <input type="tel" id="customer-phone">
-                </div>
-                <div class="form-group">
-                    <label>ابتدائی ریٹ (فی لیٹر):</label>
-                    <input type="number" id="customer-rate" step="0.5" placeholder="مثال: 60">
-                </div>
-                <button type="button" class="btn btn-success" onclick="addCustomer()">شامل کریں</button>
-            </form>
+            <h3>نیا گاہک شامل کریں</h3>
+            <div class="form-group">
+                <label>نام:</label>
+                <input type="text" id="customer-name" placeholder="گاہک کا نام">
+            </div>
+            <div class="form-group">
+                <label>فون نمبر:</label>
+                <input type="tel" id="customer-phone" placeholder="03xxxxxxxxx">
+            </div>
+            <button class="btn" onclick="addCustomer()">شامل کریں</button>
         </div>
     </div>
 
-    <!-- Add Entry Modal -->
+    <!-- Add/Edit Entry Modal -->
     <div id="add-entry-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 class="section-title">نئی انٹری</h3>
-            <form id="add-entry-form" onsubmit="return false;">
-                <div class="form-group">
-                    <label>شروع کی تاریخ:</label>
-                    <input type="date" id="entry-from-date" required>
-                </div>
-                <div class="form-group">
-                    <label>اختتام کی تاریخ:</label>
-                    <input type="date" id="entry-to-date" required>
-                </div>
-                <div class="form-group">
-                    <label>روزانہ لیٹر:</label>
-                    <input type="number" id="entry-liters" step="0.5" required>
-                </div>
-                <div class="form-group">
-                    <label>فی لیٹر ریٹ:</label>
-                    <input type="number" id="entry-rate" step="0.5" required>
-                </div>
-                <button type="button" class="btn btn-success" onclick="addEntry()">شامل کریں</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Day Off Modal -->
-    <div id="day-off-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 class="section-title">چھٹی کا دن</h3>
-            <form id="day-off-form" onsubmit="return false;">
-                <div class="form-group">
-                    <label>تاریخ:</label>
-                    <input type="date" id="day-off-date" required>
-                </div>
-                <div class="form-group">
-                    <label>وجہ:</label>
-                    <input type="text" id="day-off-reason" placeholder="چھٹی کی وجہ">
-                </div>
-                <button type="button" class="btn btn-danger" onclick="addDayOff()">شامل کریں</button>
-            </form>
+            <h3 id="entry-modal-title">نئی انٹری شامل کریں</h3>
+            <div class="form-group">
+                <label>شروع کی تاریخ:</label>
+                <input type="date" id="entry-from-date">
+            </div>
+            <div class="form-group">
+                <label>اختتام کی تاریخ:</label>
+                <input type="date" id="entry-to-date">
+            </div>
+            <div class="form-group">
+                <label>روزانہ لیٹر:</label>
+                <input type="number" id="entry-liters" placeholder="جیسے 2" step="0.1">
+            </div>
+            <div class="form-group">
+                <label>فی لیٹر ریٹ:</label>
+                <input type="number" id="entry-rate" placeholder="جیسے 120" step="0.1">
+            </div>
+            <button class="btn" id="entry-submit-btn" onclick="addEntry()">شامل کریں</button>
         </div>
     </div>
 
@@ -805,156 +910,74 @@
     <div id="payment-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 class="section-title">💰 پیمنٹ ریکارڈ</h3>
-            <form id="payment-form" onsubmit="return false;">
-                <div class="form-group">
-                    <label>مہینہ:</label>
-                    <select id="payment-month" required>
-                        <option value="">مہینہ منتخب کریں</option>
-                        <option value="2025-01">جنوری 2025</option>
-                        <option value="2025-02">فروری 2025</option>
-                        <option value="2025-03">مارچ 2025</option>
-                        <option value="2025-04">اپریل 2025</option>
-                        <option value="2025-05">مئی 2025</option>
-                        <option value="2025-06">جون 2025</option>
-                        <option value="2025-07">جولائی 2025</option>
-                        <option value="2025-08">اگست 2025</option>
-                        <option value="2025-09">ستمبر 2025</option>
-                        <option value="2025-10">اکتوبر 2025</option>
-                        <option value="2025-11">نومبر 2025</option>
-                        <option value="2025-12">دسمبر 2025</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>ادا شدہ رقم:</label>
-                    <input type="number" id="payment-amount" step="0.5" required>
-                </div>
-                <div class="form-group">
-                    <label>ادائیگی کی تاریخ:</label>
-                    <input type="date" id="payment-date" required>
-                </div>
-                <div class="form-group">
-                    <label>نوٹس:</label>
-                    <textarea id="payment-notes" rows="3" placeholder="اختیاری"></textarea>
-                </div>
-                <button type="button" class="btn btn-warning" onclick="addPayment()">💰 پیمنٹ ریکارڈ کریں</button>
-            </form>
+            <h3>رقم کی ادائیگی</h3>
+            <div class="form-group">
+                <label>رقم:</label>
+                <input type="number" id="payment-amount" placeholder="ادا شدہ رقم">
+            </div>
+            <div class="form-group">
+                <label>تاریخ:</label>
+                <input type="date" id="payment-date">
+            </div>
+            <div class="form-group">
+                <label>تبصرہ:</label>
+                <textarea id="payment-note" placeholder="کوئی خاص بات (اختیاری)"></textarea>
+            </div>
+            <button class="btn" onclick="addPayment()">ادائیگی شامل کریں</button>
+        </div>
+    </div>
+
+    <!-- Day Off Modal -->
+    <div id="day-off-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3>چھٹی کا دن</h3>
+            <div class="form-group">
+                <label>تاریخ:</label>
+                <input type="date" id="day-off-date">
+            </div>
+            <div class="form-group">
+                <label>وجہ:</label>
+                <textarea id="day-off-reason" placeholder="چھٹی کی وجہ"></textarea>
+            </div>
+            <button class="btn" onclick="addDayOff()">چھٹی شامل کریں</button>
         </div>
     </div>
 
     <script>
-        // Enhanced data storage with online backup
+        // Global variables
         let customers = [];
         let currentCustomerId = null;
         let nextId = 1;
-        let gitHubSettings = {
-            token: '',
-            repo: 'milk-business-backup',
-            username: ''
-        };
+        let editingEntryId = null;
         let autoBackupInterval = null;
 
-        // Month names mapping
-        const monthNames = {
-            '2025-01': 'جنوری 2025', '2025-02': 'فروری 2025', '2025-03': 'مارچ 2025',
-            '2025-04': 'اپریل 2025', '2025-05': 'مئی 2025', '2025-06': 'جون 2025',
-            '2025-07': 'جولائی 2025', '2025-08': 'اگست 2025', '2025-09': 'ستمبر 2025',
-            '2025-10': 'اکتوبر 2025', '2025-11': 'نومبر 2025', '2025-12': 'دسمبر 2025'
-        };
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromStorage();
+            showCustomers();
+            updateDashboard();
+            setupGitHubBackup();
+            updateAutoBackupSettings();
+        });
 
-        // =================== NOTIFICATION SYSTEM ===================
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
-                color: white;
-                padding: 15px 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                z-index: 10000;
-                max-width: 300px;
-                font-size: 14px;
-                direction: rtl;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => notification.style.opacity = '1', 100);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        function showConfirm(message, callback) {
-            const confirmDiv = document.createElement('div');
-            confirmDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            `;
-            
-            confirmDiv.innerHTML = `
-                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; direction: rtl; text-align: center;">
-                    <p style="margin-bottom: 20px; font-size: 16px;">${message}</p>
-                    <div>
-                        <button onclick="confirmYes()" style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">ہاں</button>
-                        <button onclick="confirmNo()" style="background: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">نہیں</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(confirmDiv);
-            
-            window.confirmYes = function() {
-                document.body.removeChild(confirmDiv);
-                delete window.confirmYes;
-                delete window.confirmNo;
-                callback(true);
-            };
-            
-            window.confirmNo = function() {
-                document.body.removeChild(confirmDiv);
-                delete window.confirmYes;
-                delete window.confirmNo;
-                callback(false);
-            };
-        }
-
-        // =================== DATA PERSISTENCE ===================
+        // =================== STORAGE AND BACKUP FUNCTIONS ===================
         function saveToStorage() {
             try {
                 const data = {
                     customers: customers,
                     nextId: nextId,
-                    gitHubSettings: gitHubSettings,
                     lastBackup: new Date().toISOString(),
-                    version: '3.0'
+                    version: '2.0'
                 };
                 
                 localStorage.setItem('milkBusinessData', JSON.stringify(data));
-                updateBackupStatus('محفوظ شدہ', 'success');
-                console.log('✅ Data saved to localStorage');
+                updateBackupStatus('آٹو بیک اپ: محفوظ شدہ', 'success');
+                updateBackupStats();
+                
             } catch (error) {
-                console.error('❌ Error saving data:', error);
-                updateBackupStatus('محفوظ کرنے میں خرابی', 'error');
+                console.error('Storage save error:', error);
+                updateBackupStatus('بیک اپ میں خرابی', 'error');
             }
         }
 
@@ -965,238 +988,326 @@
                     const parsed = JSON.parse(data);
                     customers = parsed.customers || [];
                     nextId = parsed.nextId || 1;
-                    gitHubSettings = parsed.gitHubSettings || { token: '', repo: 'milk-business-backup', username: '' };
-                    console.log('✅ Data loaded from localStorage');
-                    updateBackupStatus('لوڈ مکمل', 'success');
-                    return true;
                 }
             } catch (error) {
-                console.error('❌ Error loading data:', error);
-                updateBackupStatus('لوڈ کرنے میں خرابی', 'error');
+                console.error('Storage load error:', error);
+                customers = [];
+                nextId = 1;
             }
-            return false;
         }
 
         function updateBackupStatus(message, type = 'info') {
-            const statusEl = document.getElementById('backup-status');
-            if (statusEl) {
-                statusEl.textContent = message;
-                statusEl.className = 'backup-status';
-                if (type === 'error') statusEl.classList.add('error');
-                if (type === 'syncing') statusEl.classList.add('syncing');
-            }
+            const statusElement = document.getElementById('backup-status');
+            statusElement.className = `backup-status ${type}`;
+            statusElement.innerHTML = `
+                <span class="status-indicator status-${type === 'syncing' ? 'syncing' : type === 'error' ? 'offline' : 'online'}"></span>
+                ${message}
+            `;
         }
 
-        // =================== GITHUB BACKUP SYSTEM ===================
-        async function setupGitHubBackup() {
+        function setupGitHubBackup() {
+            const githubToken = localStorage.getItem('github-token') || '';
+            const githubRepo = localStorage.getItem('github-repo') || '';
+            const githubFilename = localStorage.getItem('github-filename') || 'milk-business-backup.json';
+            
+            if (document.getElementById('github-token')) {
+                document.getElementById('github-token').value = githubToken;
+                document.getElementById('github-repo').value = githubRepo;
+                document.getElementById('github-filename').value = githubFilename;
+            }
+            
+            updateGitHubStatus();
+            updateBackupStats();
+        }
+
+        async function testGitHubConnection() {
             const token = document.getElementById('github-token').value.trim();
             const repo = document.getElementById('github-repo').value.trim();
             
             if (!token || !repo) {
-                showNotification('براہ کرم GitHub ٹوکن اور ریپوزیٹری کا نام داخل کریں', 'error');
+                showNotification('براہ کرم GitHub Token اور Repository درج کریں', 'error');
                 return;
             }
             
-            updateBackupStatus('GitHub سیٹ اپ...', 'syncing');
+            updateBackupStatus('کنکشن ٹیسٹ کر رہے ہیں...', 'syncing');
             
             try {
-                // Test GitHub connection
-                const response = await fetch('https://api.github.com/user', {
+                const response = await fetch(`https://api.github.com/repos/${repo}`, {
                     headers: {
                         'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json'
+                        'Accept': 'application/vnd.github.v3+json'
                     }
                 });
                 
                 if (response.ok) {
-                    const userData = await response.json();
-                    gitHubSettings.token = token;
-                    gitHubSettings.repo = repo;
-                    gitHubSettings.username = userData.login;
+                    localStorage.setItem('github-token', token);
+                    localStorage.setItem('github-repo', repo);
+                    localStorage.setItem('github-filename', document.getElementById('github-filename').value);
                     
-                    saveToStorage();
-                    showNotification('GitHub کامیابی سے کنکٹ ہو گیا!', 'success');
-                    updateBackupStatus('GitHub Ready', 'success');
                     updateGitHubStatus();
+                    showNotification('GitHub کنکشن کامیاب!', 'success');
                 } else {
-                    throw new Error('Invalid GitHub token');
+                    throw new Error(`HTTP ${response.status}`);
                 }
+                
             } catch (error) {
-                console.error('GitHub setup error:', error);
-                showNotification('GitHub کنکشن میں خرابی', 'error');
-                updateBackupStatus('GitHub خرابی', 'error');
+                console.error('GitHub connection test failed:', error);
+                showNotification('GitHub کنکشن ناکام: ' + error.message, 'error');
             }
         }
 
         async function backupToGitHub() {
-            if (!gitHubSettings.token) {
-                showNotification('پہلے GitHub سیٹ اپ کریں', 'error');
+            const token = localStorage.getItem('github-token');
+            const repo = localStorage.getItem('github-repo');
+            const filename = localStorage.getItem('github-filename') || 'milk-business-backup.json';
+            
+            if (!token || !repo) {
+                showNotification('پہلے GitHub کنکشن سیٹ اپ کریں', 'error');
                 return;
             }
             
-            updateBackupStatus('GitHub بیک اپ...', 'syncing');
+            updateBackupStatus('GitHub میں بیک اپ کر رہے ہیں...', 'syncing');
             
             try {
                 const data = {
                     customers: customers,
                     nextId: nextId,
-                    backupDate: new Date().toISOString(),
-                    version: '3.0'
+                    lastSync: new Date().toISOString(),
+                    version: '2.0'
                 };
                 
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-                const fileName = `backup_${new Date().toISOString().split('T')[0]}.json`;
+                const content = btoa(JSON.stringify(data, null, 2));
                 
-                // Create or update file in GitHub repository
-                const response = await fetch(`https://api.github.com/repos/${gitHubSettings.username}/${gitHubSettings.repo}/contents/${fileName}`, {
+                // Get current file SHA if exists
+                let sha = null;
+                try {
+                    const getResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${filename}`, {
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    
+                    if (getResponse.ok) {
+                        const fileData = await getResponse.json();
+                        sha = fileData.sha;
+                    }
+                } catch (e) {
+                    // File doesn't exist, that's ok
+                }
+                
+                const requestBody = {
+                    message: `Milk Business Backup - ${new Date().toLocaleString('ur-PK')}`,
+                    content: content
+                };
+                
+                if (sha) {
+                    requestBody.sha = sha;
+                }
+                
+                const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filename}`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `token ${gitHubSettings.token}`,
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        message: `Milk Business Backup - ${new Date().toLocaleString('ur-PK')}`,
-                        content: content
-                    })
+                    body: JSON.stringify(requestBody)
                 });
                 
                 if (response.ok) {
-                    showNotification('GitHub میں بیک اپ مکمل!', 'success');
-                    updateBackupStatus('بیک اپ مکمل', 'success');
-                    updateBackupStats();
+                    localStorage.setItem('last-github-sync', new Date().toISOString());
+                    updateGitHubStatus();
+                    showNotification('GitHub بیک اپ کامیاب!', 'success');
                 } else {
-                    throw new Error('GitHub backup failed');
+                    throw new Error(`HTTP ${response.status}`);
                 }
+                
             } catch (error) {
-                console.error('GitHub backup error:', error);
-                showNotification('GitHub بیک اپ میں خرابی', 'error');
-                updateBackupStatus('بیک اپ خرابی', 'error');
+                console.error('GitHub sync failed:', error);
+                showNotification('GitHub بیک اپ ناکام: ' + error.message, 'error');
             }
         }
 
         async function restoreFromGitHub() {
-            if (!gitHubSettings.token) {
-                showNotification('پہلے GitHub سیٹ اپ کریں', 'error');
+            const token = localStorage.getItem('github-token');
+            const repo = localStorage.getItem('github-repo');
+            const filename = localStorage.getItem('github-filename') || 'milk-business-backup.json';
+            
+            if (!token || !repo) {
+                showNotification('پہلے GitHub کنکشن سیٹ اپ کریں', 'error');
                 return;
             }
             
+            updateBackupStatus('GitHub سے بحالی کر رہے ہیں...', 'syncing');
+            
             try {
-                updateBackupStatus('GitHub سے بحالی...', 'syncing');
-                
-                // Get list of backup files
-                const response = await fetch(`https://api.github.com/repos/${gitHubSettings.username}/${gitHubSettings.repo}/contents`, {
+                const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filename}`, {
                     headers: {
-                        'Authorization': `token ${gitHubSettings.token}`
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
                     }
                 });
                 
                 if (response.ok) {
-                    const files = await response.json();
-                    const backupFiles = files.filter(file => file.name.startsWith('backup_') && file.name.endsWith('.json'));
+                    const fileData = await response.json();
+                    const content = atob(fileData.content);
+                    const data = JSON.parse(content);
                     
-                    if (backupFiles.length === 0) {
-                        showNotification('کوئی بیک اپ فائل نہیں ملی', 'error');
-                        return;
-                    }
-                    
-                    // Get the latest backup file
-                    const latestBackup = backupFiles.sort((a, b) => b.name.localeCompare(a.name))[0];
-                    
-                    // Download and restore
-                    const fileResponse = await fetch(latestBackup.download_url);
-                    const backupData = await fileResponse.json();
-                    
-                    showConfirm('کیا آپ GitHub سے ڈیٹا restore کرنا چاہتے ہیں؟', function(confirmed) {
-                        if (confirmed) {
-                            customers = backupData.customers || [];
-                            nextId = backupData.nextId || 1;
+                    if (data.customers && Array.isArray(data.customers)) {
+                        showConfirm('کیا آپ موجودہ ڈیٹا کو GitHub سے بحال کرنا چاہتے ہیں؟', () => {
+                            customers = data.customers;
+                            nextId = data.nextId || customers.length + 1;
+                            
                             saveToStorage();
                             loadCustomers();
                             updateDashboard();
-                            showNotification('GitHub سے ڈیٹا بحال ہو گیا!', 'success');
-                            updateBackupStatus('بحالی مکمل', 'success');
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('GitHub restore error:', error);
-                showNotification('GitHub سے بحالی میں خرابی', 'error');
-                updateBackupStatus('بحالی خرابی', 'error');
-            }
-        }
-
-        async function testGitHubConnection() {
-            const token = document.getElementById('github-token').value.trim();
-            
-            if (!token) {
-                showNotification('پہلے GitHub ٹوکن داخل کریں', 'error');
-                return;
-            }
-            
-            try {
-                updateBackupStatus('کنکشن ٹیسٹ...', 'syncing');
-                
-                const response = await fetch('https://api.github.com/user', {
-                    headers: {
-                        'Authorization': `token ${token}`
+                            
+                            showNotification('GitHub سے ڈیٹا کامیابی سے بحال ہو گیا!', 'success');
+                        });
+                    } else {
+                        showNotification('GitHub فائل میں غلط ڈیٹا فارمیٹ', 'error');
                     }
-                });
-                
-                if (response.ok) {
-                    const userData = await response.json();
-                    showNotification(`کنکشن کامیاب! صارف: ${userData.login}`, 'success');
-                    updateBackupStatus('کنکشن OK', 'success');
                 } else {
-                    throw new Error('Invalid token');
+                    throw new Error(`HTTP ${response.status}`);
                 }
+                
             } catch (error) {
-                showNotification('کنکشن ناکام', 'error');
-                updateBackupStatus('کنکشن خرابی', 'error');
+                console.error('GitHub restore failed:', error);
+                showNotification('GitHub سے بحالی ناکام: ' + error.message, 'error');
             }
         }
 
         function updateGitHubStatus() {
-            const statusEl = document.getElementById('github-status');
-            if (statusEl) {
-                statusEl.textContent = gitHubSettings.token ? '✅' : '❌';
+            const statusElement = document.getElementById('github-status');
+            const syncTimeElement = document.getElementById('github-sync-time');
+            const lastSync = localStorage.getItem('last-github-sync');
+            
+            const hasCredentials = !!(localStorage.getItem('github-token') && localStorage.getItem('github-repo'));
+            
+            if (statusElement) {
+                if (hasCredentials) {
+                    statusElement.innerHTML = '<div>حالت: <span class="status-indicator status-online"></span>فعال</div>';
+                } else {
+                    statusElement.innerHTML = '<div>حالت: <span class="status-indicator status-offline"></span>غیر فعال</div>';
+                }
+            }
+            
+            if (syncTimeElement) {
+                syncTimeElement.textContent = lastSync ? 
+                    new Date(lastSync).toLocaleString('ur-PK') : 'کبھی نہیں';
             }
         }
 
-        function updateBackupStats() {
-            const now = new Date();
-            document.getElementById('last-backup-time').textContent = now.toLocaleString('ur-PK');
-            
-            const dataSize = new Blob([JSON.stringify(customers)]).size;
-            document.getElementById('backup-size').textContent = `${(dataSize / 1024).toFixed(2)} KB`;
-        }
-
-        // =================== AUTO BACKUP SYSTEM ===================
         function updateAutoBackupSettings() {
-            const frequency = parseInt(document.getElementById('auto-backup-frequency').value);
+            const enabled = document.getElementById('auto-backup-enabled')?.checked || false;
+            const interval = document.getElementById('backup-interval')?.value || '300000';
+            
+            localStorage.setItem('auto-backup-enabled', enabled);
+            localStorage.setItem('backup-interval', interval);
             
             if (autoBackupInterval) {
                 clearInterval(autoBackupInterval);
                 autoBackupInterval = null;
             }
             
-            if (frequency > 0 && gitHubSettings.token) {
+            if (enabled) {
                 autoBackupInterval = setInterval(() => {
-                    backupToGitHub();
-                }, frequency * 60 * 1000);
+                    saveToStorage();
+                    if (localStorage.getItem('github-token') && localStorage.getItem('github-repo')) {
+                        backupToGitHub();
+                    }
+                }, parseInt(interval));
                 
-                showNotification(`خودکار بیک اپ ہر ${frequency} منٹ میں شروع`, 'success');
+                updateBackupStatus('آٹو بیک اپ: فعال', 'success');
             } else {
-                showNotification('خودکار بیک اپ بند', 'info');
+                updateBackupStatus('آٹو بیک اپ: غیر فعال', 'info');
             }
         }
 
-        // =================== PDF GENERATION SYSTEM ===================
+        function updateBackupStats() {
+            const lastBackup = localStorage.getItem('milkBusinessData') ? 
+                new Date(JSON.parse(localStorage.getItem('milkBusinessData')).lastBackup || Date.now()).toLocaleString('ur-PK') : 
+                'کبھی نہیں';
+            
+            const dataSize = new Blob([localStorage.getItem('milkBusinessData') || '']).size;
+            const sizeKB = (dataSize / 1024).toFixed(2);
+            
+            if (document.getElementById('local-backup-time')) {
+                document.getElementById('local-backup-time').textContent = lastBackup;
+            }
+            if (document.getElementById('data-size')) {
+                document.getElementById('data-size').textContent = sizeKB + ' KB';
+            }
+        }
+
+        function exportData() {
+            try {
+                const data = {
+                    customers: customers,
+                    nextId: nextId,
+                    exportDate: new Date().toISOString(),
+                    version: '2.0'
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `milk_business_export_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showNotification('ڈیٹا کامیابی سے Export ہو گیا!', 'success');
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showNotification('Export میں خرابی', 'error');
+            }
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.customers && Array.isArray(data.customers)) {
+                        showConfirm('کیا آپ موجودہ ڈیٹا کو نئے ڈیٹا سے بدلنا چاہتے ہیں؟', () => {
+                            customers = data.customers;
+                            nextId = data.nextId || customers.length + 1;
+                            
+                            saveToStorage();
+                            loadCustomers();
+                            updateDashboard();
+                            
+                            showNotification('ڈیٹا کامیابی سے Import ہو گیا!', 'success');
+                        });
+                    } else {
+                        showNotification('غلط فائل فارمیٹ', 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showNotification('فائل پڑھنے میں خرابی', 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // =================== PDF GENERATION FUNCTIONS ===================
         function generateComprehensivePDF() {
             try {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
                 
-                // Add Urdu support (simplified)
                 doc.setFont("helvetica");
                 doc.setFontSize(16);
                 
@@ -1282,7 +1393,6 @@
                     yPosition += 10;
                 });
                 
-                // Download the PDF
                 const fileName = `Milk_Business_Complete_Report_${new Date().toISOString().split('T')[0]}.pdf`;
                 doc.save(fileName);
                 showNotification('مکمل PDF رپورٹ ڈاؤن لوڈ مکمل!', 'success');
@@ -1298,32 +1408,26 @@
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
                 
-                const currentMonth = new Date().toISOString().slice(0, 7);
-                const monthName = monthNames[currentMonth] || currentMonth;
-                
                 doc.setFont("helvetica");
                 doc.setFontSize(16);
+                
+                const currentMonth = new Date().toISOString().slice(0, 7);
+                const monthName = getMonthName(currentMonth);
                 
                 let yPosition = 20;
                 
                 doc.text(`Monthly Report - ${monthName}`, 20, yPosition);
                 yPosition += 20;
                 
-                doc.setFontSize(12);
-                
                 let monthlyRevenue = 0;
                 let monthlyPayments = 0;
-                let activeCustomers = 0;
                 
                 customers.forEach(customer => {
-                    let customerActiveThisMonth = false;
-                    
                     if (customer.entries) {
                         customer.entries.forEach(entry => {
-                            if (entry.type === 'delivery') {
-                                const entryMonth = (entry.date || entry.fromDate).slice(0, 7);
-                                if (entryMonth === currentMonth) {
-                                    customerActiveThisMonth = true;
+                            const entryDate = entry.date || entry.fromDate;
+                            if (entryDate && entryDate.startsWith(currentMonth)) {
+                                if (entry.type === 'delivery') {
                                     const days = calculateDays(entry.fromDate, entry.toDate);
                                     monthlyRevenue += days * entry.liters * entry.rate;
                                 }
@@ -1333,17 +1437,14 @@
                     
                     if (customer.payments) {
                         customer.payments.forEach(payment => {
-                            if (payment.month === currentMonth) {
+                            if (payment.date && payment.date.startsWith(currentMonth)) {
                                 monthlyPayments += parseFloat(payment.amount);
                             }
                         });
                     }
-                    
-                    if (customerActiveThisMonth) activeCustomers++;
                 });
                 
-                doc.text(`Active Customers: ${activeCustomers}`, 20, yPosition);
-                yPosition += 10;
+                doc.setFontSize(12);
                 doc.text(`Monthly Revenue: ${monthlyRevenue} PKR`, 20, yPosition);
                 yPosition += 10;
                 doc.text(`Monthly Payments: ${monthlyPayments} PKR`, 20, yPosition);
@@ -1352,11 +1453,11 @@
                 
                 const fileName = `Monthly_Report_${currentMonth}.pdf`;
                 doc.save(fileName);
-                showNotification('ماہانہ PDF ڈاؤن لوڈ مکمل!', 'success');
+                showNotification('ماہانہ PDF رپورٹ ڈاؤن لوڈ مکمل!', 'success');
                 
             } catch (error) {
-                console.error('Monthly PDF error:', error);
-                showNotification('ماہانہ PDF میں خرابی', 'error');
+                console.error('Monthly PDF generation error:', error);
+                showNotification('ماہانہ PDF بنانے میں خرابی', 'error');
             }
         }
 
@@ -1366,8 +1467,14 @@
                 return;
             }
             
+            generateCustomerPDFReport(currentCustomerId);
+        }
+
+        function generateCustomerPDFReport(customerId) {
             try {
-                const customer = customers.find(c => c.id === currentCustomerId);
+                const customer = customers.find(c => c.id === customerId);
+                if (!customer) return;
+                
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
                 
@@ -1376,34 +1483,34 @@
                 
                 let yPosition = 20;
                 
-                doc.text(`Customer Report: ${customer.name}`, 20, yPosition);
+                doc.text(`Customer Report - ${customer.name}`, 20, yPosition);
                 yPosition += 20;
                 
                 doc.setFontSize(12);
                 doc.text(`Phone: ${customer.phone || 'N/A'}`, 20, yPosition);
                 yPosition += 15;
                 
-                let totalRevenue = 0;
-                let totalPayments = 0;
+                let customerRevenue = 0;
+                let customerPayments = 0;
                 
                 if (customer.entries) {
                     doc.text('Delivery Entries:', 20, yPosition);
                     yPosition += 10;
                     
                     customer.entries.forEach((entry, index) => {
-                        if (yPosition > 270) {
-                            doc.addPage();
-                            yPosition = 20;
-                        }
-                        
                         if (entry.type === 'delivery') {
                             const days = calculateDays(entry.fromDate, entry.toDate);
                             const totalLiters = days * entry.liters;
                             const amount = totalLiters * entry.rate;
-                            totalRevenue += amount;
+                            customerRevenue += amount;
+                            
+                            if (yPosition > 270) {
+                                doc.addPage();
+                                yPosition = 20;
+                            }
                             
                             doc.setFontSize(10);
-                            doc.text(`${index + 1}. ${formatDate(entry.fromDate)} to ${formatDate(entry.toDate)}`, 25, yPosition);
+                            doc.text(`${index + 1}. ${entry.fromDate} to ${entry.toDate}`, 25, yPosition);
                             yPosition += 7;
                             doc.text(`   ${days} days x ${entry.liters} liters = ${totalLiters} total liters`, 25, yPosition);
                             yPosition += 7;
@@ -1414,829 +1521,61 @@
                 }
                 
                 if (customer.payments) {
-                    customer.payments.forEach(payment => {
-                        totalPayments += parseFloat(payment.amount);
+                    yPosition += 10;
+                    doc.setFontSize(12);
+                    doc.text('Payments:', 20, yPosition);
+                    yPosition += 10;
+                    
+                    customer.payments.forEach((payment, index) => {
+                        customerPayments += parseFloat(payment.amount);
+                        
+                        if (yPosition > 270) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        
+                        doc.setFontSize(10);
+                        doc.text(`${index + 1}. ${payment.date}: ${payment.amount} PKR`, 25, yPosition);
+                        if (payment.note) {
+                            yPosition += 7;
+                            doc.text(`   Note: ${payment.note}`, 25, yPosition);
+                        }
+                        yPosition += 10;
                     });
                 }
                 
                 yPosition += 10;
                 doc.setFontSize(12);
-                doc.text(`Total Revenue: ${totalRevenue} PKR`, 20, yPosition);
+                doc.text(`Total Bill: ${customerRevenue} PKR`, 20, yPosition);
                 yPosition += 10;
-                doc.text(`Total Payments: ${totalPayments} PKR`, 20, yPosition);
+                doc.text(`Total Paid: ${customerPayments} PKR`, 20, yPosition);
                 yPosition += 10;
-                doc.text(`Remaining: ${totalRevenue - totalPayments} PKR`, 20, yPosition);
+                doc.text(`Remaining: ${customerRevenue - customerPayments} PKR`, 20, yPosition);
                 
                 const fileName = `${customer.name}_Report_${new Date().toISOString().split('T')[0]}.pdf`;
                 doc.save(fileName);
-                showNotification('گاہک کی PDF ڈاؤن لوڈ مکمل!', 'success');
+                showNotification(`${customer.name} کی PDF رپورٹ ڈاؤن لوڈ مکمل!`, 'success');
                 
             } catch (error) {
-                console.error('Customer PDF error:', error);
-                showNotification('گاہک PDF میں خرابی', 'error');
+                console.error('Customer PDF generation error:', error);
+                showNotification('گاہک PDF بنانے میں خرابی', 'error');
             }
         }
 
-        function generateCustomerPDFReport() {
-            generateCustomerPDF();
-        }
-
-        async function saveAllPDFsOnline() {
-            if (!gitHubSettings.token) {
-                showNotification('پہلے GitHub سیٹ اپ کریں', 'error');
-                return;
-            }
+        function saveAllPDFsOnline() {
+            showNotification('تمام PDFs بنا رہے ہیں...', 'info');
             
-            try {
-                updateBackupStatus('PDFs آنلائن محفوظ...', 'syncing');
-                
-                // Generate comprehensive report data
-                const reportData = {
-                    generatedAt: new Date().toISOString(),
-                    summary: {
-                        totalCustomers: customers.length,
-                        totalRevenue: 0,
-                        totalPayments: 0
-                    },
-                    customers: customers.map(customer => {
-                        let customerRevenue = 0;
-                        let customerPayments = 0;
-                        
-                        if (customer.entries) {
-                            customer.entries.forEach(entry => {
-                                if (entry.type === 'delivery') {
-                                    const days = calculateDays(entry.fromDate, entry.toDate);
-                                    customerRevenue += days * entry.liters * entry.rate;
-                                }
-                            });
-                        }
-                        
-                        if (customer.payments) {
-                            customer.payments.forEach(payment => {
-                                customerPayments += parseFloat(payment.amount);
-                            });
-                        }
-                        
-                        return {
-                            name: customer.name,
-                            phone: customer.phone,
-                            totalRevenue: customerRevenue,
-                            totalPayments: customerPayments,
-                            remaining: customerRevenue - customerPayments,
-                            entries: customer.entries || [],
-                            payments: customer.payments || []
-                        };
-                    })
-                };
-                
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(reportData, null, 2))));
-                const fileName = `pdfs/complete_report_${new Date().toISOString().split('T')[0]}.json`;
-                
-                const response = await fetch(`https://api.github.com/repos/${gitHubSettings.username}/${gitHubSettings.repo}/contents/${fileName}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${gitHubSettings.token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `PDF Report Data - ${new Date().toLocaleString('ur-PK')}`,
-                        content: content
-                    })
-                });
-                
-                if (response.ok) {
-                    showNotification('PDFs GitHub میں محفوظ!', 'success');
-                    updateBackupStatus('PDFs محفوظ', 'success');
-                } else {
-                    throw new Error('Failed to save PDFs online');
-                }
-            } catch (error) {
-                console.error('Save PDFs online error:', error);
-                showNotification('PDFs آنلائن محفوظ کرنے میں خرابی', 'error');
-                updateBackupStatus('PDFs خرابی', 'error');
-            }
-        }
-
-        // =================== UTILITY FUNCTIONS ===================
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            if (dateString.includes('/')) return dateString;
+            // Generate all PDFs
+            setTimeout(() => generateComprehensivePDF(), 500);
+            setTimeout(() => generateMonthlyPDF(), 1500);
             
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return dateString;
-            
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            
-            return `${day}/${month}/${year}`;
-        }
-
-        function calculateDays(fromDate, toDate) {
-            const from = new Date(fromDate);
-            const to = new Date(toDate);
-            
-            if (isNaN(from.getTime()) || isNaN(to.getTime())) return 0;
-            
-            const diffTime = Math.abs(to - from);
-            const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-            
-            return days;
-        }
-
-        function getMonthName(monthValue) {
-            return monthNames[monthValue] || monthValue;
-        }
-
-        // =================== NAVIGATION FUNCTIONS ===================
-        function showDashboard() {
-            setActiveNav(0);
-            showSection('dashboard-section');
-            updateDashboard();
-        }
-
-        function showCustomers() {
-            setActiveNav(1);
-            showSection('customers-section');
-            loadCustomers();
-        }
-
-        function showReports() {
-            setActiveNav(2);
-            showSection('reports-section');
-            setupReportFilters();
-        }
-
-        function showBackupManagement() {
-            setActiveNav(3);
-            showSection('backup-management-section');
-            updateGitHubStatus();
-            updateBackupStats();
-        }
-
-        function showDataManagement() {
-            setActiveNav(4);
-            showSection('data-management-section');
-            updateDataManagementStats();
-        }
-
-        function setActiveNav(index) {
-            document.querySelectorAll('.nav-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
-        }
-
-        function showSection(sectionId) {
-            document.querySelectorAll('[id$="-section"]').forEach(section => {
-                section.classList.add('hidden');
-            });
-            document.getElementById(sectionId).classList.remove('hidden');
-        }
-
-        // =================== CUSTOMER MANAGEMENT ===================
-        function loadCustomers() {
-            displayCustomers(customers);
-        }
-
-        function displayCustomers(customerList) {
-            const grid = document.getElementById('customers-grid');
-            grid.innerHTML = '';
-
-            customerList.forEach(customer => {
-                const card = document.createElement('div');
-                card.className = 'customer-card';
-                card.onclick = () => showLedger(customer.id);
-                
-                const paymentStatus = getPaymentStatus(customer);
-                
-                card.innerHTML = `
-                    <div class="payment-status ${paymentStatus.class}">${paymentStatus.text}</div>
-                    <h3>${customer.name}</h3>
-                    <p>📞 ${customer.phone || 'فون نمبر موجود نہیں'}</p>
-                    <p>💰 کل: ${calculateCustomerTotal(customer.id)} روپے</p>
-                `;
-                
-                grid.appendChild(card);
-            });
-
-            const addBtn = document.createElement('div');
-            addBtn.className = 'add-customer-btn';
-            addBtn.onclick = () => showAddCustomerModal();
-            addBtn.innerHTML = '<span style="font-size: 2em;">+</span> نیا گاہک شامل کریں';
-            grid.appendChild(addBtn);
-        }
-
-        function getPaymentStatus(customer) {
-            const currentMonth = new Date().toISOString().slice(0, 7);
-            
-            let monthlyTotal = 0;
-            const monthlyEntries = customer.entries?.filter(entry => {
-                const entryDate = entry.date || entry.fromDate;
-                return entry.type === 'delivery' && entryDate && entryDate.startsWith(currentMonth);
-            }) || [];
-            
-            monthlyEntries.forEach(entry => {
-                const days = calculateDays(entry.fromDate, entry.toDate);
-                const amount = days * entry.liters * entry.rate;
-                monthlyTotal += amount;
+            customers.forEach((customer, index) => {
+                setTimeout(() => generateCustomerPDFReport(customer.id), 2500 + (index * 1000));
             });
             
-            let paidAmount = 0;
-            const payments = customer.payments?.filter(p => p.month === currentMonth) || [];
-            payments.forEach(payment => {
-                paidAmount += parseFloat(payment.amount);
-            });
-            
-            if (monthlyTotal === 0) return { status: 'no-bill', text: 'کوئی بل نہیں', class: 'status-paid' };
-            if (paidAmount >= monthlyTotal) return { status: 'paid', text: 'ادا شدہ', class: 'status-paid' };
-            if (paidAmount > 0) return { status: 'partial', text: 'جزوی ادا', class: 'status-pending' };
-            return { status: 'pending', text: 'باقی', class: 'status-overdue' };
-        }
-
-        function calculateCustomerTotal(customerId) {
-            const customer = customers.find(c => c.id === customerId);
-            if (!customer || !customer.entries) return 0;
-
-            let total = 0;
-            customer.entries.forEach(entry => {
-                if (entry.type === 'delivery') {
-                    const days = calculateDays(entry.fromDate, entry.toDate);
-                    total += days * entry.liters * entry.rate;
-                }
-            });
-            return total.toFixed(0);
-        }
-
-        function searchCustomers() {
-            const searchTerm = document.getElementById('customer-search').value.toLowerCase().trim();
-            
-            if (!searchTerm) {
-                loadCustomers();
-                return;
-            }
-
-            const filteredCustomers = customers.filter(customer => 
-                customer.name.toLowerCase().includes(searchTerm) ||
-                (customer.phone && customer.phone.includes(searchTerm))
-            );
-
-            displayCustomers(filteredCustomers);
-        }
-
-        // =================== MODAL FUNCTIONS ===================
-        function showAddCustomerModal() {
-            document.getElementById('add-customer-modal').classList.add('show');
-            document.getElementById('add-customer-modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.classList.remove('show');
-                modal.style.display = 'none';
-            });
-            
-            document.querySelectorAll('form').forEach(form => form.reset());
-        }
-
-        // =================== CUSTOMER OPERATIONS ===================
-        function addCustomer() {
-            const name = document.getElementById('customer-name').value.trim();
-            const phone = document.getElementById('customer-phone').value.trim();
-            const rate = document.getElementById('customer-rate').value.trim();
-            
-            if (!name) {
-                showNotification('براہ کرم گاہک کا نام داخل کریں', 'error');
-                return;
-            }
-            
-            const customer = {
-                id: nextId++,
-                name: name,
-                phone: phone,
-                defaultRate: rate ? parseFloat(rate) : 60,
-                entries: [],
-                payments: [],
-                createdAt: new Date().toISOString()
-            };
-            
-            customers.push(customer);
-            saveToStorage();
-            
-            document.getElementById('customer-name').value = '';
-            document.getElementById('customer-phone').value = '';
-            document.getElementById('customer-rate').value = '';
-            
-            closeModal();
-            loadCustomers();
-            updateDashboard();
-            
-            showNotification('گاہک کامیابی سے شامل ہو گیا!', 'success');
-        }
-
-        // =================== LEDGER FUNCTIONS ===================
-        function showLedger(customerId) {
-            currentCustomerId = customerId;
-            const customer = customers.find(c => c.id === customerId);
-            
-            if (!customer) return;
-            
-            showSection('ledger-section');
-            
-            document.getElementById('ledger-customer-name').textContent = customer.name;
-            document.getElementById('ledger-customer-phone').textContent = customer.phone || 'فون نمبر موجود نہیں';
-            
-            const monthFilter = document.getElementById('month-filter');
-            if (monthFilter) monthFilter.value = 'all';
-            
-            loadLedgerEntries(customerId);
-            updateBillSummary(customer.entries);
-        }
-
-        function loadLedgerEntries(customerId) {
-            const customer = customers.find(c => c.id === customerId);
-            const container = document.getElementById('ledger-entries');
-            const selectedMonth = document.getElementById('month-filter')?.value || 'all';
-            
-            container.innerHTML = '';
-
-            if (!customer.entries || customer.entries.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">کوئی انٹری موجود نہیں</div>';
-                updateBillSummary([]);
-                return;
-            }
-
-            let filteredEntries = customer.entries;
-            if (selectedMonth !== 'all') {
-                filteredEntries = customer.entries.filter(entry => {
-                    const entryDate = entry.date || entry.fromDate;
-                    return entryDate && entryDate.startsWith(selectedMonth);
-                });
-            }
-
-            if (filteredEntries.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">اس مہینے کوئی انٹری موجود نہیں</div>';
-                updateBillSummary([]);
-                return;
-            }
-
-            filteredEntries.sort((a, b) => new Date(b.date || b.fromDate) - new Date(a.date || a.fromDate));
-
-            filteredEntries.forEach(entry => {
-                const entryDiv = document.createElement('div');
-                entryDiv.className = `entry-item ${entry.type === 'day-off' ? 'day-off' : ''}`;
-                
-                if (entry.type === 'delivery') {
-                    const days = calculateDays(entry.fromDate, entry.toDate);
-                    const totalLiters = days * entry.liters;
-                    const total = totalLiters * entry.rate;
-                    
-                    entryDiv.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <strong>دودھ کی فراہمی</strong>
-                            <div style="background: #667eea; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
-                                ${total} روپے
-                            </div>
-                        </div>
-                        📅 ${formatDate(entry.fromDate)} سے ${formatDate(entry.toDate)} تک (${days} دن)<br>
-                        🥛 روزانہ ${entry.liters} لیٹر × ${days} دن = <strong>${totalLiters} کل لیٹر</strong><br>
-                        💰 ${totalLiters} لیٹر × ${entry.rate} روپے = <strong>${total} روپے</strong>
-                    `;
-                } else {
-                    entryDiv.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <strong>چھٹی کا دن</strong>
-                            <div style="background: #ff416c; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
-                                آف ڈے
-                            </div>
-                        </div>
-                        📅 ${formatDate(entry.date)}<br>
-                        📝 ${entry.reason || 'کوئی وجہ نہیں دی گئی'}
-                    `;
-                }
-                
-                container.appendChild(entryDiv);
-            });
-
-            updateBillSummary(filteredEntries);
-        }
-
-        function updateBillSummary(entries) {
-            let totalLiters = 0;
-            let totalDays = 0;
-            let totalAmount = 0;
-
-            if (entries && entries.length > 0) {
-                entries.forEach(entry => {
-                    if (entry.type === 'delivery') {
-                        const days = calculateDays(entry.fromDate, entry.toDate);
-                        const liters = days * parseFloat(entry.liters || 0);
-                        const amount = liters * parseFloat(entry.rate || 0);
-                        
-                        totalLiters += liters;
-                        totalDays += days;
-                        totalAmount += amount;
-                    }
-                });
-            }
-
-            document.getElementById('summary-total-liters').textContent = totalLiters.toFixed(1);
-            document.getElementById('summary-total-days').textContent = totalDays;
-            document.getElementById('summary-total-amount').textContent = totalAmount.toFixed(0);
-        }
-
-        function filterByMonth() {
-            loadLedgerEntries(currentCustomerId);
-        }
-
-        // =================== ENTRY MANAGEMENT ===================
-        function showAddEntryModal() {
-            if (!currentCustomerId) {
-                showNotification('پہلے گاہک منتخب کریں', 'error');
-                return;
-            }
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('entry-from-date').value = today;
-            document.getElementById('entry-to-date').value = today;
-            
-            const customer = customers.find(c => c.id === currentCustomerId);
-            if (customer && customer.defaultRate) {
-                document.getElementById('entry-rate').value = customer.defaultRate;
-            }
-            
-            const modal = document.getElementById('add-entry-modal');
-            modal.classList.add('show');
-            modal.style.display = 'flex';
-        }
-
-        function addEntry() {
-            if (!currentCustomerId) {
-                showNotification('پہلے گاہک منتخب کریں', 'error');
-                return;
-            }
-            
-            const fromDate = document.getElementById('entry-from-date').value;
-            const toDate = document.getElementById('entry-to-date').value;
-            const liters = parseFloat(document.getElementById('entry-liters').value);
-            const rate = parseFloat(document.getElementById('entry-rate').value);
-            
-            if (!fromDate || !toDate || !liters || !rate) {
-                showNotification('براہ کرم تمام فیلڈز بھریں', 'error');
-                return;
-            }
-            
-            if (new Date(fromDate) > new Date(toDate)) {
-                showNotification('اختتام کی تاریخ شروع کی تاریخ سے پہلے نہیں ہو سکتی', 'error');
-                return;
-            }
-            
-            const customer = customers.find(c => c.id === currentCustomerId);
-            if (!customer.entries) {
-                customer.entries = [];
-            }
-            
-            const entry = {
-                id: Date.now(),
-                type: 'delivery',
-                fromDate: fromDate,
-                toDate: toDate,
-                liters: liters,
-                rate: rate,
-                date: fromDate,
-                createdAt: new Date().toISOString()
-            };
-            
-            customer.entries.push(entry);
-            saveToStorage();
-            
-            document.getElementById('entry-from-date').value = '';
-            document.getElementById('entry-to-date').value = '';
-            document.getElementById('entry-liters').value = '';
-            document.getElementById('entry-rate').value = '';
-            
-            closeModal();
-            loadLedgerEntries(currentCustomerId);
-            loadCustomers();
-            updateDashboard();
-            
-            showNotification('انٹری کامیابی سے شامل ہو گئی!', 'success');
-        }
-
-        function showDayOffModal() {
-            const modal = document.getElementById('day-off-modal');
-            if (modal) {
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('day-off-date').value = today;
-                modal.classList.add('show');
-                modal.style.display = 'flex';
-            }
-        }
-
-        function addDayOff() {
-            const date = document.getElementById('day-off-date').value;
-            const reason = document.getElementById('day-off-reason').value;
-            
-            if (!date) {
-                showNotification('براہ کرم تاریخ منتخب کریں', 'error');
-                return;
-            }
-            
-            const customer = customers.find(c => c.id === currentCustomerId);
-            const entry = {
-                id: Date.now(),
-                type: 'day-off',
-                date: date,
-                reason: reason || 'کوئی وجہ نہیں دی گئی',
-                createdAt: new Date().toISOString()
-            };
-            
-            customer.entries.push(entry);
-            saveToStorage();
-            
-            document.getElementById('day-off-date').value = '';
-            document.getElementById('day-off-reason').value = '';
-            
-            closeModal();
-            loadLedgerEntries(currentCustomerId);
-            showNotification('چھٹی کا دن شامل ہو گیا!', 'success');
-        }
-
-        // =================== PAYMENT MANAGEMENT ===================
-        function showPaymentModal() {
-            const modal = document.getElementById('payment-modal');
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('payment-date').value = today;
-            
-            modal.classList.add('show');
-            modal.style.display = 'flex';
-        }
-
-        function addPayment() {
-            const month = document.getElementById('payment-month').value;
-            const amount = parseFloat(document.getElementById('payment-amount').value);
-            const date = document.getElementById('payment-date').value;
-            const notes = document.getElementById('payment-notes').value;
-            
-            if (!month || !amount || !date) {
-                showNotification('براہ کرم تمام ضروری فیلڈز بھریں', 'error');
-                return;
-            }
-            
-            const customer = customers.find(c => c.id === currentCustomerId);
-            if (!customer.payments) {
-                customer.payments = [];
-            }
-            
-            const payment = {
-                id: Date.now(),
-                month: month,
-                amount: amount,
-                date: date,
-                notes: notes,
-                timestamp: new Date().toISOString()
-            };
-            
-            customer.payments.push(payment);
-            saveToStorage();
-            
-            document.getElementById('payment-month').value = '';
-            document.getElementById('payment-amount').value = '';
-            document.getElementById('payment-date').value = '';
-            document.getElementById('payment-notes').value = '';
-            
-            closeModal();
-            loadCustomers();
-            updateDashboard();
-            
-            showNotification(`پیمنٹ کامیابی سے ریکارڈ ہو گئی! ${amount} روپے - ${getMonthName(month)}`, 'success');
-        }
-
-        // =================== REPORTS ===================
-        function setupReportFilters() {
-            const today = new Date();
-            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            
-            document.getElementById('report-start-date').value = firstDay.toISOString().split('T')[0];
-            document.getElementById('report-end-date').value = lastDay.toISOString().split('T')[0];
-        }
-
-        function generateReport() {
-            const reportType = document.getElementById('report-type').value;
-            const startDate = document.getElementById('report-start-date').value;
-            const endDate = document.getElementById('report-end-date').value;
-
-            if (!startDate || !endDate) {
-                showNotification('براہ کرم شروعاتی اور اختتامی تاریخ منتخب کریں', 'error');
-                return;
-            }
-
-            let reportContent = generateBasicReport(startDate, endDate, reportType);
-            
-            document.getElementById('report-content').innerHTML = reportContent;
-            document.getElementById('report-results').style.display = 'block';
-        }
-
-        function generateBasicReport(startDate, endDate, reportType) {
-            let totalRevenue = 0;
-            let totalPayments = 0;
-            let activeCustomers = 0;
-
-            customers.forEach(customer => {
-                let customerActive = false;
-                
-                customer.entries?.forEach(entry => {
-                    if (entry.type === 'delivery') {
-                        const entryDate = entry.date || entry.fromDate;
-                        if (entryDate >= startDate && entryDate <= endDate) {
-                            customerActive = true;
-                            const days = calculateDays(entry.fromDate, entry.toDate);
-                            const amount = days * entry.liters * entry.rate;
-                            totalRevenue += amount;
-                        }
-                    }
-                });
-
-                customer.payments?.forEach(payment => {
-                    if (payment.date >= startDate && payment.date <= endDate) {
-                        totalPayments += parseFloat(payment.amount);
-                    }
-                });
-
-                if (customerActive) activeCustomers++;
-            });
-
-            return `
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">${customers.length}</div>
-                        <div>کل گاہک</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${activeCustomers}</div>
-                        <div>فعال گاہک</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${totalRevenue.toFixed(0)}</div>
-                        <div>کل فروخت</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${totalPayments.toFixed(0)}</div>
-                        <div>کل وصولی</div>
-                    </div>
-                </div>
-                <p style="text-align: center; margin-top: 20px; color: #667eea; font-size: 16px;">
-                    ${reportType === 'comprehensive' ? 'مکمل' : reportType === 'monthly' ? 'ماہانہ' : 'تفصیلی'} رپورٹ: ${startDate} سے ${endDate} تک
-                </p>
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-info" onclick="generateComprehensivePDF()" style="margin: 5px;">📄 PDF ڈاؤن لوڈ</button>
-                    <button class="btn btn-success" onclick="saveAllPDFsOnline()" style="margin: 5px;">☁️ آنلائن محفوظ</button>
-                </div>
-            `;
-        }
-
-        // =================== DATA MANAGEMENT ===================
-        function exportData() {
-            try {
-                const data = {
-                    customers: customers,
-                    nextId: nextId,
-                    gitHubSettings: gitHubSettings,
-                    exportDate: new Date().toISOString(),
-                    version: '3.0'
-                };
-
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `milk_business_export_${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-
-                showNotification('✅ ڈیٹا کامیابی سے ایکسپورٹ ہو گیا!', 'success');
-            } catch (error) {
-                console.error('❌ Export error:', error);
-                showNotification('ایکسپورٹ میں خرابی: ' + error.message, 'error');
-            }
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    
-                    showConfirm('کیا آپ واقعی موجودہ ڈیٹا کو تبدیل کرنا چاہتے ہیں؟ یہ عمل واپس نہیں ہو سکتا۔', function(confirmed) {
-                        if (confirmed) {
-                            customers = data.customers || [];
-                            nextId = data.nextId || 1;
-                            gitHubSettings = data.gitHubSettings || { token: '', repo: 'milk-business-backup', username: '' };
-                            
-                            saveToStorage();
-                            loadCustomers();
-                            updateDashboard();
-                            updateDataManagementStats();
-                            
-                            showNotification('✅ ڈیٹا کامیابی سے امپورٹ ہو گیا!', 'success');
-                        }
-                    });
-                } catch (error) {
-                    console.error('❌ Import error:', error);
-                    showNotification('امپورٹ میں خرابی: ' + error.message, 'error');
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function clearAllData() {
-            showConfirm('کیا آپ واقعی تمام ڈیٹا صاف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں ہو سکتا۔', function(firstConfirm) {
-                if (firstConfirm) {
-                    showConfirm('آخری بار تصدیق: تمام گاہک، انٹریز اور پیمنٹس ڈیلیٹ ہو جائیں گے!', function(secondConfirm) {
-                        if (secondConfirm) {
-                            customers = [];
-                            nextId = 1;
-                            gitHubSettings = { token: '', repo: 'milk-business-backup', username: '' };
-                            
-                            localStorage.removeItem('milkBusinessData');
-                            
-                            loadCustomers();
-                            updateDashboard();
-                            updateDataManagementStats();
-                            
-                            showNotification('✅ تمام ڈیٹا صاف ہو گیا!', 'success');
-                        }
-                    });
-                }
-            });
-        }
-
-        function updateDataManagementStats() {
-            const totalCustomers = customers.length;
-            let totalEntries = 0;
-            let totalPayments = 0;
-
-            customers.forEach(customer => {
-                totalEntries += customer.entries?.length || 0;
-                totalPayments += customer.payments?.length || 0;
-            });
-
-            const dataSize = new Blob([JSON.stringify({ customers, nextId, gitHubSettings })]).size;
-            const dataSizeKB = (dataSize / 1024).toFixed(2);
-
-            document.getElementById('total-customers-data').textContent = totalCustomers;
-            document.getElementById('total-entries-data').textContent = totalEntries;
-            document.getElementById('total-payments-data').textContent = totalPayments;
-            document.getElementById('data-size').textContent = dataSizeKB;
-        }
-
-        // =================== DASHBOARD FUNCTIONS ===================
-        function updateDashboard() {
-            const currentMonth = new Date().toISOString().slice(0, 7);
-            const totalCustomers = customers.length;
-            let monthlyRevenue = 0;
-            let monthlyReceived = 0;
-            let activeCustomersThisMonth = 0;
-
-            customers.forEach(customer => {
-                let customerActiveThisMonth = false;
-                
-                if (customer.entries) {
-                    customer.entries.forEach(entry => {
-                        if (entry.type === 'delivery') {
-                            const entryMonth = (entry.date || entry.fromDate).slice(0, 7);
-                            if (entryMonth === currentMonth) {
-                                customerActiveThisMonth = true;
-                                const days = calculateDays(entry.fromDate, entry.toDate);
-                                monthlyRevenue += days * entry.liters * entry.rate;
-                            }
-                        }
-                    });
-                }
-                
-                if (customer.payments) {
-                    customer.payments.forEach(payment => {
-                        if (payment.month === currentMonth) {
-                            monthlyReceived += parseFloat(payment.amount);
-                        }
-                    });
-                }
-
-                if (customerActiveThisMonth) activeCustomersThisMonth++;
-            });
-
-            const monthlyPending = monthlyRevenue - monthlyReceived;
-
-            document.getElementById('total-customers').textContent = totalCustomers;
-            document.getElementById('total-revenue').textContent = monthlyRevenue.toFixed(0);
-            document.getElementById('total-received').textContent = monthlyReceived.toFixed(0);
-            document.getElementById('total-pending').textContent = monthlyPending.toFixed(0);
+            setTimeout(() => {
+                showNotification('تمام PDFs کامیابی سے بن گئیں!', 'success');
+            }, 2500 + (customers.length * 1000));
         }
 
         // =================== WHATSAPP SHARING ===================
@@ -2294,73 +1633,843 @@
             showNotification('WhatsApp پر شیئر کے لیے تیار!', 'success');
         }
 
-        // =================== INITIALIZATION ===================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Enhanced Milk Business App initializing...');
+        // =================== CUSTOMER MANAGEMENT ===================
+        function loadCustomers() {
+            displayCustomers(customers);
+        }
+
+        function displayCustomers(customerList) {
+            const grid = document.getElementById('customers-grid');
+            grid.innerHTML = '';
+
+            customerList.forEach(customer => {
+                const card = document.createElement('div');
+                card.className = 'customer-card';
+                card.onclick = () => showLedger(customer.id);
+                
+                const paymentStatus = getPaymentStatus(customer);
+                const total = calculateCustomerTotal(customer.id);
+                
+                card.innerHTML = `
+                    <div class="payment-status ${paymentStatus.class}">${paymentStatus.text}</div>
+                    <h3>${customer.name}</h3>
+                    <p>📞 ${customer.phone || 'فون نمبر موجود نہیں'}</p>
+                    <p>💰 کل: ${total} روپے</p>
+                `;
+                
+                grid.appendChild(card);
+            });
+
+            // Add new customer card
+            const addBtn = document.createElement('div');
+            addBtn.className = 'customer-card add-customer-card';
+            addBtn.innerHTML = '➕';
+            addBtn.onclick = showAddCustomerModal;
+            grid.appendChild(addBtn);
+        }
+
+        function getPaymentStatus(customer) {
+            const totalBill = calculateCustomerTotal(customer.id);
+            const totalPaid = customer.payments ? customer.payments.reduce((sum, payment) => sum + parseFloat(payment.amount), 0) : 0;
+            const pending = totalBill - totalPaid;
             
-            // Load data from storage
-            loadFromStorage();
+            if (pending <= 0) {
+                return { class: 'paid', text: 'ادا شدہ' };
+            } else if (totalPaid > 0) {
+                return { class: 'partial', text: 'جزوی ادائیگی' };
+            } else {
+                return { class: 'pending', text: 'باقی' };
+            }
+        }
+
+        function calculateCustomerTotal(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer || !customer.entries) return 0;
             
-            // Initialize dashboard as default view
-            setActiveNav(0);
-            showSection('dashboard-section');
+            let total = 0;
+            customer.entries.forEach(entry => {
+                if (entry.type === 'delivery') {
+                    const days = calculateDays(entry.fromDate, entry.toDate);
+                    const totalLiters = days * entry.liters;
+                    total += totalLiters * entry.rate;
+                }
+            });
             
-            // Initialize all sections
+            return total;
+        }
+
+        function searchCustomers() {
+            const searchTerm = document.getElementById('customer-search').value.toLowerCase();
+            const filteredCustomers = customers.filter(customer => 
+                customer.name.toLowerCase().includes(searchTerm) || 
+                (customer.phone && customer.phone.includes(searchTerm))
+            );
+            displayCustomers(filteredCustomers);
+        }
+
+        function showAddCustomerModal() {
+            document.getElementById('add-customer-modal').style.display = 'block';
+        }
+
+        function addCustomer() {
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            
+            if (!name) {
+                showNotification('براہ کرم نام درج کریں', 'error');
+                return;
+            }
+            
+            const customer = {
+                id: nextId++,
+                name: name,
+                phone: phone,
+                entries: [],
+                payments: []
+            };
+            
+            customers.push(customer);
+            saveToStorage();
+            
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-phone').value = '';
+            
+            closeModal();
             loadCustomers();
             updateDashboard();
-            updateDataManagementStats();
             
-            // Set GitHub settings in UI
-            if (gitHubSettings.token) {
-                document.getElementById('github-token').value = gitHubSettings.token;
-            }
-            if (gitHubSettings.repo) {
-                document.getElementById('github-repo').value = gitHubSettings.repo;
-            }
-            
-            // Set today's date as default for payment
-            const today = new Date().toISOString().split('T')[0];
-            const paymentDateInput = document.getElementById('payment-date');
-            if (paymentDateInput) {
-                paymentDateInput.value = today;
-            }
-            
-            // Update status
-            updateBackupStatus('App Ready', 'success');
-            updateGitHubStatus();
-            
-            console.log('✅ Enhanced Milk Business App initialized successfully!');
-            console.log(`📊 Loaded ${customers.length} customers from storage`);
-            showNotification('🚀 Enhanced Milk Business App آمادہ!', 'success');
-        });
+            showNotification('گاہک کامیابی سے شامل ہو گیا!', 'success');
+        }
 
-        // Auto-save every 30 seconds
-        setInterval(() => {
-            if (customers.length > 0) {
+        // =================== ENTRY MANAGEMENT WITH EDIT/DELETE ===================
+        function showLedger(customerId) {
+            currentCustomerId = customerId;
+            const customer = customers.find(c => c.id === customerId);
+            
+            document.getElementById('ledger-title').textContent = `${customer.name} کا کھاتہ`;
+            showSection('ledger-section');
+            loadLedgerEntries(customerId);
+        }
+
+        function loadLedgerEntries(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            const container = document.getElementById('ledger-entries');
+            const selectedMonth = document.getElementById('month-filter')?.value || 'all';
+            
+            container.innerHTML = '';
+
+            if (!customer.entries || customer.entries.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">کوئی انٹری موجود نہیں</div>';
+                updateBillSummary([]);
+                return;
+            }
+
+            let filteredEntries = customer.entries;
+            if (selectedMonth !== 'all') {
+                filteredEntries = customer.entries.filter(entry => {
+                    const entryDate = entry.date || entry.fromDate;
+                    return entryDate && entryDate.startsWith(selectedMonth);
+                });
+            }
+
+            if (filteredEntries.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">اس مہینے کوئی انٹری موجود نہیں</div>';
+                updateBillSummary([]);
+                return;
+            }
+
+            filteredEntries.sort((a, b) => new Date(b.date || b.fromDate) - new Date(a.date || a.fromDate));
+
+            filteredEntries.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = `entry-item ${entry.type}`;
+                
+                if (entry.type === 'delivery') {
+                    const days = calculateDays(entry.fromDate, entry.toDate);
+                    const totalLiters = days * entry.liters;
+                    const total = totalLiters * entry.rate;
+                    
+                    entryDiv.innerHTML = `
+                        <div class="entry-actions">
+                            <button class="entry-action-btn edit-btn" onclick="editEntry(${entry.id})" title="ترمیم کریں">✏️</button>
+                            <button class="entry-action-btn delete-btn" onclick="deleteEntry(${entry.id})" title="حذف کریں">🗑️</button>
+                        </div>
+                        <div class="entry-content">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong>دودھ کی فراہمی</strong>
+                                <div style="background: #667eea; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                                    ${total} روپے
+                                </div>
+                            </div>
+                            📅 ${formatDate(entry.fromDate)} سے ${formatDate(entry.toDate)} تک (${days} دن)<br>
+                            🥛 روزانہ ${entry.liters} لیٹر × ${days} دن = <strong>${totalLiters} کل لیٹر</strong><br>
+                            💰 ${totalLiters} لیٹر × ${entry.rate} روپے = <strong>${total} روپے</strong>
+                        </div>
+                    `;
+                } else if (entry.type === 'day-off') {
+                    entryDiv.innerHTML = `
+                        <div class="entry-actions">
+                            <button class="entry-action-btn delete-btn" onclick="deleteEntry(${entry.id})" title="حذف کریں">🗑️</button>
+                        </div>
+                        <div class="entry-content">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong>چھٹی کا دن</strong>
+                                <div style="background: #ff416c; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                                    آف ڈے
+                                </div>
+                            </div>
+                            📅 ${formatDate(entry.date)}<br>
+                            📝 ${entry.reason || 'کوئی وجہ نہیں دی گئی'}
+                        </div>
+                    `;
+                } else if (entry.type === 'payment') {
+                    entryDiv.innerHTML = `
+                        <div class="entry-actions">
+                            <button class="entry-action-btn delete-btn" onclick="deleteEntry(${entry.id})" title="حذف کریں">🗑️</button>
+                        </div>
+                        <div class="entry-content">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong>ادائیگی</strong>
+                                <div style="background: #4CAF50; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                                    ${entry.amount} روپے
+                                </div>
+                            </div>
+                            📅 ${formatDate(entry.date)}<br>
+                            💰 ${entry.amount} روپے
+                            ${entry.note ? `<br>📝 ${entry.note}` : ''}
+                        </div>
+                    `;
+                }
+                
+                container.appendChild(entryDiv);
+            });
+
+            updateBillSummary(filteredEntries);
+        }
+
+        function showAddEntryModal() {
+            editingEntryId = null;
+            document.getElementById('entry-modal-title').textContent = 'نئی انٹری شامل کریں';
+            document.getElementById('entry-submit-btn').textContent = 'شامل کریں';
+            
+            // Clear form
+            document.getElementById('entry-from-date').value = '';
+            document.getElementById('entry-to-date').value = '';
+            document.getElementById('entry-liters').value = '';
+            document.getElementById('entry-rate').value = '';
+            
+            document.getElementById('add-entry-modal').style.display = 'block';
+        }
+
+        function editEntry(entryId) {
+            const customer = customers.find(c => c.id === currentCustomerId);
+            const entry = customer.entries.find(e => e.id === entryId);
+            
+            if (!entry || entry.type !== 'delivery') {
+                showNotification('صرف دودھ کی انٹری میں ترمیم ہو سکتی ہے', 'error');
+                return;
+            }
+            
+            editingEntryId = entryId;
+            document.getElementById('entry-modal-title').textContent = 'انٹری میں ترمیم کریں';
+            document.getElementById('entry-submit-btn').textContent = 'اپڈیٹ کریں';
+            
+            // Fill form with existing data
+            document.getElementById('entry-from-date').value = entry.fromDate;
+            document.getElementById('entry-to-date').value = entry.toDate;
+            document.getElementById('entry-liters').value = entry.liters;
+            document.getElementById('entry-rate').value = entry.rate;
+            
+            document.getElementById('add-entry-modal').style.display = 'block';
+        }
+
+        function deleteEntry(entryId) {
+            showConfirm('کیا آپ واقعی یہ انٹری حذف کرنا چاہتے ہیں؟', () => {
+                const customer = customers.find(c => c.id === currentCustomerId);
+                customer.entries = customer.entries.filter(e => e.id !== entryId);
+                
                 saveToStorage();
-                console.log('💾 Auto-saved data');
-            }
-        }, 30000);
+                loadLedgerEntries(currentCustomerId);
+                loadCustomers();
+                updateDashboard();
+                
+                showNotification('انٹری کامیابی سے حذف ہو گئی!', 'success');
+            });
+        }
 
-        // Auto-backup every 5 minutes if GitHub is configured
-        setInterval(() => {
-            if (gitHubSettings.token && customers.length > 0) {
-                backupToGitHub();
+        function addEntry() {
+            if (!currentCustomerId) {
+                showNotification('پہلے گاہک منتخب کریں', 'error');
+                return;
             }
-        }, 300000); // 5 minutes
+            
+            const fromDate = document.getElementById('entry-from-date').value;
+            const toDate = document.getElementById('entry-to-date').value;
+            const liters = parseFloat(document.getElementById('entry-liters').value);
+            const rate = parseFloat(document.getElementById('entry-rate').value);
+            
+            if (!fromDate || !toDate || !liters || !rate) {
+                showNotification('براہ کرم تمام فیلڈز بھریں', 'error');
+                return;
+            }
+            
+            if (new Date(fromDate) > new Date(toDate)) {
+                showNotification('اختتام کی تاریخ شروع کی تاریخ سے پہلے نہیں ہو سکتی', 'error');
+                return;
+            }
+            
+            const customer = customers.find(c => c.id === currentCustomerId);
+            if (!customer.entries) {
+                customer.entries = [];
+            }
+            
+            if (editingEntryId) {
+                // Update existing entry
+                const entryIndex = customer.entries.findIndex(e => e.id === editingEntryId);
+                if (entryIndex > -1) {
+                    customer.entries[entryIndex] = {
+                        ...customer.entries[entryIndex],
+                        fromDate: fromDate,
+                        toDate: toDate,
+                        liters: liters,
+                        rate: rate,
+                        updatedAt: new Date().toISOString()
+                    };
+                    showNotification('انٹری کامیابی سے اپڈیٹ ہو گئی!', 'success');
+                }
+            } else {
+                // Add new entry
+                const entry = {
+                    id: Date.now(),
+                    type: 'delivery',
+                    fromDate: fromDate,
+                    toDate: toDate,
+                    liters: liters,
+                    rate: rate,
+                    date: fromDate,
+                    createdAt: new Date().toISOString()
+                };
+                
+                customer.entries.push(entry);
+                showNotification('انٹری کامیابی سے شامل ہو گئی!', 'success');
+            }
+            
+            saveToStorage();
+            
+            // Clear form
+            document.getElementById('entry-from-date').value = '';
+            document.getElementById('entry-to-date').value = '';
+            document.getElementById('entry-liters').value = '';
+            document.getElementById('entry-rate').value = '';
+            
+            closeModal();
+            loadLedgerEntries(currentCustomerId);
+            loadCustomers();
+            updateDashboard();
+        }
 
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
+        function showPaymentModal() {
+            const modal = document.getElementById('payment-modal');
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('payment-date').value = today;
+            
+            modal.classList.add('show');
+            modal.style.display = 'flex';
+        }
+
+        function addPayment() {
+            if (!currentCustomerId) {
+                showNotification('پہلے گاہک منتخب کریں', 'error');
+                return;
+            }
+            
+            const amount = parseFloat(document.getElementById('payment-amount').value);
+            const date = document.getElementById('payment-date').value;
+            const note = document.getElementById('payment-note').value.trim();
+            
+            if (!amount || !date) {
+                showNotification('براہ کرم رقم اور تاریخ درج کریں', 'error');
+                return;
+            }
+            
+            const customer = customers.find(c => c.id === currentCustomerId);
+            if (!customer.payments) {
+                customer.payments = [];
+            }
+            if (!customer.entries) {
+                customer.entries = [];
+            }
+            
+            const payment = {
+                id: Date.now(),
+                type: 'payment',
+                amount: amount,
+                date: date,
+                note: note,
+                createdAt: new Date().toISOString()
+            };
+            
+            customer.payments.push(payment);
+            customer.entries.push(payment);
+            
+            saveToStorage();
+            
+            document.getElementById('payment-amount').value = '';
+            document.getElementById('payment-note').value = '';
+            
+            closeModal();
+            loadLedgerEntries(currentCustomerId);
+            loadCustomers();
+            updateDashboard();
+            
+            showNotification('ادائیگی کامیابی سے شامل ہو گئی!', 'success');
+        }
+
+        function showDayOffModal() {
+            const modal = document.getElementById('day-off-modal');
+            if (modal) {
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('day-off-date').value = today;
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+            }
+        }
+
+        function addDayOff() {
+            if (!currentCustomerId) {
+                showNotification('پہلے گاہک منتخب کریں', 'error');
+                return;
+            }
+            
+            const date = document.getElementById('day-off-date').value;
+            const reason = document.getElementById('day-off-reason').value.trim();
+            
+            if (!date) {
+                showNotification('براہ کرم تاریخ منتخب کریں', 'error');
+                return;
+            }
+            
+            const customer = customers.find(c => c.id === currentCustomerId);
+            if (!customer.entries) {
+                customer.entries = [];
+            }
+            
+            const dayOff = {
+                id: Date.now(),
+                type: 'day-off',
+                date: date,
+                reason: reason,
+                createdAt: new Date().toISOString()
+            };
+            
+            customer.entries.push(dayOff);
+            saveToStorage();
+            
+            document.getElementById('day-off-date').value = '';
+            document.getElementById('day-off-reason').value = '';
+            
+            closeModal();
+            loadLedgerEntries(currentCustomerId);
+            updateDashboard();
+            
+            showNotification('چھٹی کا دن کامیابی سے شامل ہو گیا!', 'success');
+        }
+
+        // =================== REPORTING FUNCTIONS ===================
+        function setupReportFilters() {
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            
+            document.getElementById('report-start-date').value = firstDay.toISOString().split('T')[0];
+            document.getElementById('report-end-date').value = today.toISOString().split('T')[0];
+        }
+
+        function generateReport() {
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
+            const reportType = document.getElementById('report-type').value;
+            
+            if (!startDate || !endDate) {
+                showNotification('براہ کرم تاریخ کی حد منتخب کریں', 'error');
+                return;
+            }
+            
+            generateBasicReport(startDate, endDate, reportType);
+        }
+
+        function generateBasicReport(startDate, endDate, reportType) {
+            let totalRevenue = 0;
+            let totalPayments = 0;
+            let totalCustomers = customers.length;
+            
+            customers.forEach(customer => {
+                if (customer.entries) {
+                    customer.entries.forEach(entry => {
+                        const entryDate = entry.date || entry.fromDate;
+                        if (entryDate && entryDate >= startDate && entryDate <= endDate) {
+                            if (entry.type === 'delivery') {
+                                const days = calculateDays(entry.fromDate, entry.toDate);
+                                totalRevenue += days * entry.liters * entry.rate;
+                            } else if (entry.type === 'payment') {
+                                totalPayments += parseFloat(entry.amount);
+                            }
+                        }
+                    });
+                }
+                
+                if (customer.payments) {
+                    customer.payments.forEach(payment => {
+                        if (payment.date && payment.date >= startDate && payment.date <= endDate) {
+                            // Payment already counted in entries
+                        }
+                    });
+                }
+            });
+            
+            document.getElementById('total-revenue').textContent = `${totalRevenue} روپے`;
+            document.getElementById('total-customers').textContent = totalCustomers;
+            document.getElementById('total-received').textContent = `${totalPayments} روپے`;
+            
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            let monthlyRevenue = 0;
+            
+            customers.forEach(customer => {
+                if (customer.entries) {
+                    customer.entries.forEach(entry => {
+                        if (entry.type === 'delivery') {
+                            const entryDate = entry.date || entry.fromDate;
+                            if (entryDate && entryDate.startsWith(currentMonth)) {
+                                const days = calculateDays(entry.fromDate, entry.toDate);
+                                monthlyRevenue += days * entry.liters * entry.rate;
+                            }
+                        }
+                    });
+                }
+            });
+            
+            document.getElementById('monthly-revenue').textContent = `${monthlyRevenue} روپے`;
+            
+            showNotification('رپورٹ تیار ہو گئی!', 'success');
+        }
+
+        // =================== UTILITY FUNCTIONS ===================
+        function calculateDays(fromDate, toDate) {
+            const start = new Date(fromDate);
+            const end = new Date(toDate);
+            const diffTime = Math.abs(end - start);
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ur-PK');
+        }
+
+        function getMonthName(monthValue) {
+            const months = {
+                'all': 'تمام مہینے',
+                '2024-01': 'جنوری 2024',
+                '2024-02': 'فروری 2024',
+                '2024-03': 'مارچ 2024',
+                '2024-04': 'اپریل 2024',
+                '2024-05': 'مئی 2024',
+                '2024-06': 'جون 2024',
+                '2024-07': 'جولائی 2024',
+                '2024-08': 'اگست 2024',
+                '2024-09': 'ستمبر 2024',
+                '2024-10': 'اکتوبر 2024',
+                '2024-11': 'نومبر 2024',
+                '2024-12': 'دسمبر 2024',
+                '2025-01': 'جنوری 2025',
+                '2025-02': 'فروری 2025',
+                '2025-03': 'مارچ 2025',
+                '2025-04': 'اپریل 2025',
+                '2025-05': 'مئی 2025',
+                '2025-06': 'جون 2025',
+                '2025-07': 'جولائی 2025',
+                '2025-08': 'اگست 2025',
+                '2025-09': 'ستمبر 2025',
+                '2025-10': 'اکتوبر 2025',
+                '2025-11': 'نومبر 2025',
+                '2025-12': 'دسمبر 2025'
+            };
+            return months[monthValue] || monthValue;
+        }
+
+        function updateBillSummary(entries) {
+            let totalLiters = 0;
+            let totalDays = 0;
+            let totalAmount = 0;
+
+            if (entries && entries.length > 0) {
+                entries.forEach(entry => {
+                    if (entry.type === 'delivery') {
+                        const days = calculateDays(entry.fromDate, entry.toDate);
+                        const liters = days * parseFloat(entry.liters || 0);
+                        const amount = liters * parseFloat(entry.rate || 0);
+                        
+                        totalLiters += liters;
+                        totalDays += days;
+                        totalAmount += amount;
+                    }
+                });
+            }
+
+            document.getElementById('bill-summary').innerHTML = `
+                <h3>📋 بل کا خلاصہ</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                    <div style="text-align: center; background: white; padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5em; color: #4CAF50; font-weight: bold;">${totalDays}</div>
+                        <div>کل دن</div>
+                    </div>
+                    <div style="text-align: center; background: white; padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5em; color: #2196F3; font-weight: bold;">${totalLiters}</div>
+                        <div>کل لیٹر</div>
+                    </div>
+                    <div style="text-align: center; background: white; padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5em; color: #ff9800; font-weight: bold;">${totalAmount} روپے</div>
+                        <div>کل رقم</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateDashboard() {
+            const totalRevenue = customers.reduce((sum, customer) => sum + calculateCustomerTotal(customer.id), 0);
+            const totalCustomers = customers.length;
+            
+            let totalPayments = 0;
+            customers.forEach(customer => {
+                if (customer.payments) {
+                    customer.payments.forEach(payment => {
+                        totalPayments += parseFloat(payment.amount);
+                    });
+                }
+            });
+            
+            const pendingAmount = totalRevenue - totalPayments;
+            
+            // Calculate monthly revenue (current month)
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            let monthlyRevenue = 0;
+            
+            customers.forEach(customer => {
+                if (customer.entries) {
+                    customer.entries.forEach(entry => {
+                        if (entry.type === 'delivery') {
+                            const entryDate = entry.date || entry.fromDate;
+                            if (entryDate && entryDate.startsWith(currentMonth)) {
+                                const days = calculateDays(entry.fromDate, entry.toDate);
+                                const totalLiters = days * entry.liters;
+                                monthlyRevenue += totalLiters * entry.rate;
+                            }
+                        }
+                    });
+                }
+            });
+            
+            // Update dashboard stats
+            if (document.getElementById('total-customers-stat')) {
+                document.getElementById('total-customers-stat').textContent = totalCustomers;
+                document.getElementById('total-revenue-stat').textContent = `${totalRevenue} روپے`;
+                document.getElementById('total-payments-stat').textContent = `${totalPayments} روپے`;
+                document.getElementById('pending-amount-stat').textContent = `${pendingAmount} روپے`;
+            }
+            
+            // Update reports section
+            if (document.getElementById('total-revenue')) {
+                document.getElementById('total-revenue').textContent = `${totalRevenue} روپے`;
+                document.getElementById('total-customers').textContent = totalCustomers;
+                document.getElementById('monthly-revenue').textContent = `${monthlyRevenue} روپے`;
+                document.getElementById('total-received').textContent = `${totalPayments} روپے`;
+            }
+        }
+
+        function updateDataManagementStats() {
+            let totalEntries = 0;
+            let totalPayments = 0;
+            
+            customers.forEach(customer => {
+                if (customer.entries) totalEntries += customer.entries.length;
+                if (customer.payments) totalPayments += customer.payments.length;
+            });
+            
+            const dataSize = new Blob([localStorage.getItem('milkBusinessData') || '']).size;
+            const sizeKB = (dataSize / 1024).toFixed(2);
+            
+            if (document.getElementById('stats-customers')) {
+                document.getElementById('stats-customers').textContent = customers.length;
+                document.getElementById('stats-entries').textContent = totalEntries;
+                document.getElementById('stats-payments').textContent = totalPayments;
+                document.getElementById('stats-size').textContent = sizeKB + ' KB';
+            }
+        }
+
+        function clearAllData() {
+            showConfirm('⚠️ یہ عمل تمام ڈیٹا حذف کر دے گا! کیا آپ واقعی جاری رکھنا چاہتے ہیں؟', () => {
+                customers = [];
+                nextId = 1;
+                currentCustomerId = null;
+                
+                localStorage.removeItem('milkBusinessData');
+                
+                loadCustomers();
+                updateDashboard();
+                showCustomers();
+                
+                showNotification('تمام ڈیٹا کامیابی سے صاف ہو گیا!', 'success');
+            });
+        }
+
+        // =================== NAVIGATION ===================
+        function showDashboard() {
+            setActiveNav(4);
+            showSection('dashboard-section');
+            updateDashboard();
+        }
+
+        function showCustomers() {
+            setActiveNav(0);
+            showSection('customers-section');
+            loadCustomers();
+        }
+
+        function showReports() {
+            setActiveNav(1);
+            showSection('reports-section');
+            setupReportFilters();
+            updateDashboard();
+        }
+
+        function showBackupManagement() {
+            setActiveNav(2);
+            showSection('backup-management-section');
+            updateGitHubStatus();
+            updateBackupStats();
+        }
+
+        function showDataManagement() {
+            setActiveNav(3);
+            showSection('data-management-section');
+            updateDataManagementStats();
+        }
+
+        function setActiveNav(index) {
+            document.querySelectorAll('.nav-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('[id$="-section"]').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+            });
+            editingEntryId = null;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                max-width: 300px;
+                font-size: 14px;
+                direction: rtl;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.opacity = '1', 100);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function showConfirm(message, callback) {
+            const confirmDiv = document.createElement('div');
+            confirmDiv.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            confirmDiv.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; direction: rtl; text-align: center;">
+                    <p style="margin-bottom: 20px; font-size: 16px;">${message}</p>
+                    <div>
+                        <button onclick="confirmYes()" style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">ہاں</button>
+                        <button onclick="confirmNo()" style="background: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">نہیں</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmDiv);
+            
+            window.confirmYes = function() {
+                document.body.removeChild(confirmDiv);
+                callback();
+                delete window.confirmYes;
+                delete window.confirmNo;
+            };
+            
+            window.confirmNo = function() {
+                document.body.removeChild(confirmDiv);
+                delete window.confirmYes;
+                delete window.confirmNo;
+            };
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
                 closeModal();
             }
-        });
+        }
 
-        // Handle beforeunload to save data
-        window.addEventListener('beforeunload', function() {
-            saveToStorage();
-        });
-
+        // Initialize auto backup on page load
+        window.onload = function() {
+            // Load auto backup settings
+            const autoBackupEnabled = localStorage.getItem('auto-backup-enabled') === 'true';
+            const backupInterval = localStorage.getItem('backup-interval') || '300000';
+            
+            if (document.getElementById('auto-backup-enabled')) {
+                document.getElementById('auto-backup-enabled').checked = autoBackupEnabled;
+                document.getElementById('backup-interval').value = backupInterval;
+            }
+            
+            updateAutoBackupSettings();
+        }
     </script>
 </body>
 </html>
