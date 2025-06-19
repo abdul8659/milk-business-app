@@ -1502,47 +1502,53 @@
                 const secondaryColor = [118, 75, 162];
                 const successColor = [76, 175, 80];
                 const errorColor = [244, 67, 54];
+                const infoColor = [33, 150, 243];
                 
                 let yPosition = 20;
                 
-                // Header
+                // Header with customer name
                 doc.setFillColor(...primaryColor);
-                doc.rect(0, 0, 210, 40, 'F');
+                doc.rect(0, 0, 210, 45, 'F');
                 doc.setTextColor(255, 255, 255);
-                doc.setFontSize(20);
+                doc.setFontSize(24);
                 doc.setFont("helvetica", "bold");
-                doc.text('گاہک کی رپورٹ - Customer Report', 105, 18, { align: 'center' });
-                doc.setFontSize(14);
-                doc.text(`${customer.name}`, 105, 28, { align: 'center' });
+                doc.text('گاہک کی مکمل رپورٹ', 105, 20, { align: 'center' });
+                doc.text('Customer Complete Report', 105, 30, { align: 'center' });
                 
-                yPosition = 50;
+                doc.setFontSize(18);
+                doc.text(`${customer.name}`, 105, 40, { align: 'center' });
                 
-                // Customer info
+                yPosition = 55;
+                
+                // Customer Contact Information
                 doc.setFillColor(248, 249, 250);
-                doc.rect(10, yPosition, 190, 30, 'F');
+                doc.rect(10, yPosition, 190, 25, 'F');
                 doc.setDrawColor(...primaryColor);
                 doc.setLineWidth(2);
-                doc.rect(10, yPosition, 190, 30, 'S');
+                doc.rect(10, yPosition, 190, 25, 'S');
                 
-                yPosition += 10;
+                yPosition += 8;
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(14);
                 doc.setFont("helvetica", "bold");
-                doc.text('رابطہ کی تفصیلات - Contact Details', 15, yPosition);
+                doc.text('رابطہ کی معلومات - Contact Information', 15, yPosition);
                 
                 yPosition += 10;
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "normal");
-                doc.text(`نام - Name: ${customer.name}`, 15, yPosition);
-                yPosition += 8;
-                doc.text(`فون - Phone: ${customer.phone || 'فراہم نہیں کیا گیا'}`, 15, yPosition);
+                doc.text(`نام / Name: ${customer.name}`, 15, yPosition);
+                yPosition += 6;
+                doc.text(`فون / Phone: ${customer.phone || 'فراہم نہیں کیا گیا / Not Provided'}`, 15, yPosition);
                 
                 yPosition += 20;
                 
-                // Calculate totals
+                // Calculate all totals
                 let customerRevenue = 0;
                 let customerPayments = 0;
+                let totalLiters = 0;
+                let totalDays = 0;
                 
+                // Calculate delivery totals
                 if (customer.entries) {
                     customer.entries.forEach(entry => {
                         if (entry.type === 'delivery') {
@@ -1550,10 +1556,13 @@
                             const liters = days * entry.liters;
                             const amount = liters * entry.rate;
                             customerRevenue += amount;
+                            totalLiters += liters;
+                            totalDays += days;
                         }
                     });
                 }
                 
+                // Calculate payment totals
                 if (customer.payments) {
                     customer.payments.forEach(payment => {
                         customerPayments += parseFloat(payment.amount);
@@ -1562,29 +1571,260 @@
                 
                 const customerPending = customerRevenue - customerPayments;
                 
-                // Summary
-                doc.setFillColor(...successColor);
-                doc.rect(15, yPosition, 60, 30, 'F');
+                // Summary Section
+                doc.setFillColor(...infoColor);
+                doc.rect(10, yPosition, 190, 12, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(14);
                 doc.setFont("helvetica", "bold");
-                doc.text(`${customerRevenue.toLocaleString()}`, 45, yPosition + 12, { align: 'center' });
-                doc.setFontSize(8);
-                doc.text('کل بل - Total Bill', 45, yPosition + 20, { align: 'center' });
+                doc.text('خلاصہ / Summary', 15, yPosition + 8);
                 
-                doc.setFillColor(...errorColor);
-                doc.rect(130, yPosition, 60, 30, 'F');
-                doc.setFontSize(14);
-                doc.text(`${customerPending.toLocaleString()}`, 160, yPosition + 12, { align: 'center' });
-                doc.setFontSize(8);
-                doc.text('باقی - Remaining', 160, yPosition + 20, { align: 'center' });
+                yPosition += 20;
                 
-                // Footer
-                doc.setFillColor(...primaryColor);
-                doc.rect(0, 285, 210, 12, 'F');
+                // Summary Cards
+                const cardWidth = 47;
+                const cardHeight = 35;
+                const cardSpacing = 5;
+                
+                // Total Bill Card
+                doc.setFillColor(...successColor);
+                doc.rect(10, yPosition, cardWidth, cardHeight, 'F');
                 doc.setTextColor(255, 255, 255);
-                doc.setFontSize(10);
-                doc.text(`${customer.name} کی رپورٹ | ${new Date().toLocaleDateString('ur-PK')}`, 105, 292, { align: 'center' });
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                doc.text(`${customerRevenue.toLocaleString()}`, 10 + cardWidth/2, yPosition + 15, { align: 'center' });
+                doc.setFontSize(9);
+                doc.text('کل بل', 10 + cardWidth/2, yPosition + 22, { align: 'center' });
+                doc.text('Total Bill', 10 + cardWidth/2, yPosition + 28, { align: 'center' });
+                
+                // Total Paid Card
+                doc.setFillColor(...infoColor);
+                doc.rect(10 + cardWidth + cardSpacing, yPosition, cardWidth, cardHeight, 'F');
+                doc.setFontSize(14);
+                doc.text(`${customerPayments.toLocaleString()}`, 10 + cardWidth + cardSpacing + cardWidth/2, yPosition + 15, { align: 'center' });
+                doc.setFontSize(9);
+                doc.text('ادا شدہ', 10 + cardWidth + cardSpacing + cardWidth/2, yPosition + 22, { align: 'center' });
+                doc.text('Total Paid', 10 + cardWidth + cardSpacing + cardWidth/2, yPosition + 28, { align: 'center' });
+                
+                // Remaining Card
+                const pendingColor = customerPending > 0 ? errorColor : successColor;
+                doc.setFillColor(...pendingColor);
+                doc.rect(10 + 2*(cardWidth + cardSpacing), yPosition, cardWidth, cardHeight, 'F');
+                doc.setFontSize(14);
+                doc.text(`${customerPending.toLocaleString()}`, 10 + 2*(cardWidth + cardSpacing) + cardWidth/2, yPosition + 15, { align: 'center' });
+                doc.setFontSize(9);
+                doc.text('باقی', 10 + 2*(cardWidth + cardSpacing) + cardWidth/2, yPosition + 22, { align: 'center' });
+                doc.text('Remaining', 10 + 2*(cardWidth + cardSpacing) + cardWidth/2, yPosition + 28, { align: 'center' });
+                
+                // Total Liters Card
+                doc.setFillColor(...primaryColor);
+                doc.rect(10 + 3*(cardWidth + cardSpacing), yPosition, cardWidth, cardHeight, 'F');
+                doc.setFontSize(14);
+                doc.text(`${totalLiters.toFixed(1)}`, 10 + 3*(cardWidth + cardSpacing) + cardWidth/2, yPosition + 15, { align: 'center' });
+                doc.setFontSize(9);
+                doc.text('کل لیٹر', 10 + 3*(cardWidth + cardSpacing) + cardWidth/2, yPosition + 22, { align: 'center' });
+                doc.text('Total Liters', 10 + 3*(cardWidth + cardSpacing) + cardWidth/2, yPosition + 28, { align: 'center' });
+                
+                yPosition += cardHeight + 15;
+                
+                // Delivery Entries Section
+                if (customer.entries && customer.entries.length > 0) {
+                    const deliveryEntries = customer.entries.filter(entry => entry.type === 'delivery');
+                    
+                    if (deliveryEntries.length > 0) {
+                        doc.setFillColor(...primaryColor);
+                        doc.rect(10, yPosition, 190, 12, 'F');
+                        doc.setTextColor(255, 255, 255);
+                        doc.setFontSize(14);
+                        doc.setFont("helvetica", "bold");
+                        doc.text('دودھ کی فراہمی کی تفصیلات / Delivery Details', 15, yPosition + 8);
+                        
+                        yPosition += 20;
+                        
+                        doc.setTextColor(0, 0, 0);
+                        doc.setFontSize(10);
+                        
+                        let entryNumber = 1;
+                        deliveryEntries.forEach(entry => {
+                            if (yPosition > 250) {
+                                doc.addPage();
+                                yPosition = 20;
+                            }
+                            
+                            const days = calculateDays(entry.fromDate, entry.toDate);
+                            const totalLitersEntry = days * entry.liters;
+                            const amount = totalLitersEntry * entry.rate;
+                            
+                            // Entry background
+                            doc.setFillColor(240, 248, 255);
+                            doc.rect(10, yPosition, 190, 28, 'F');
+                            doc.setDrawColor(...infoColor);
+                            doc.setLineWidth(1);
+                            doc.rect(10, yPosition, 190, 28, 'S');
+                            
+                            // Entry number
+                            doc.setFillColor(...secondaryColor);
+                            doc.circle(20, yPosition + 10, 5, 'F');
+                            doc.setTextColor(255, 255, 255);
+                            doc.setFont("helvetica", "bold");
+                            doc.setFontSize(10);
+                            doc.text(`${entryNumber}`, 20, yPosition + 12, { align: 'center' });
+                            
+                            doc.setTextColor(0, 0, 0);
+                            doc.setFont("helvetica", "normal");
+                            doc.setFontSize(10);
+                            
+                            // Entry details
+                            doc.text(`تاریخ / Date: ${formatDate(entry.fromDate)} سے / to ${formatDate(entry.toDate)}`, 30, yPosition + 8);
+                            doc.text(`${days} دن × ${entry.liters} لیٹر = ${totalLitersEntry} کل لیٹر`, 30, yPosition + 15);
+                            doc.text(`مہینہ / Month: ${getMonthName(entry.month)}`, 30, yPosition + 22);
+                            
+                            // Amount
+                            doc.setTextColor(...successColor);
+                            doc.setFont("helvetica", "bold");
+                            doc.text(`${totalLitersEntry} لیٹر × ${entry.rate} = ${amount} روپے`, 30, yPosition + 29);
+                            
+                            yPosition += 35;
+                            entryNumber++;
+                        });
+                    }
+                }
+                
+                // Payments Section
+                if (customer.payments && customer.payments.length > 0) {
+                    yPosition += 10;
+                    
+                    if (yPosition > 250) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    doc.setFillColor(...successColor);
+                    doc.rect(10, yPosition, 190, 12, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text('ادائیگیوں کی تفصیلات / Payment Details', 15, yPosition + 8);
+                    
+                    yPosition += 20;
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(10);
+                    
+                    customer.payments.forEach((payment, index) => {
+                        if (yPosition > 270) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        
+                        // Payment background
+                        doc.setFillColor(240, 255, 240);
+                        doc.rect(10, yPosition, 190, 22, 'F');
+                        doc.setDrawColor(...successColor);
+                        doc.setLineWidth(1);
+                        doc.rect(10, yPosition, 190, 22, 'S');
+                        
+                        doc.setFont("helvetica", "bold");
+                        doc.text(`${index + 1}. ${formatDate(payment.date)}`, 15, yPosition + 8);
+                        
+                        if (payment.month) {
+                            doc.setFont("helvetica", "normal");
+                            doc.text(`مہینہ / Month: ${getMonthName(payment.month)}`, 15, yPosition + 15);
+                        }
+                        
+                        doc.setTextColor(...successColor);
+                        doc.setFont("helvetica", "bold");
+                        doc.text(`${payment.amount} روپے / PKR`, 120, yPosition + 8);
+                        
+                        if (payment.note) {
+                            doc.setTextColor(100, 100, 100);
+                            doc.setFont("helvetica", "normal");
+                            doc.text(`نوٹ / Note: ${payment.note}`, 120, yPosition + 15);
+                        }
+                        
+                        yPosition += 27;
+                    });
+                }
+                
+                // Day-off entries if any
+                const dayOffEntries = customer.entries ? customer.entries.filter(entry => entry.type === 'day-off') : [];
+                if (dayOffEntries.length > 0) {
+                    yPosition += 10;
+                    
+                    if (yPosition > 250) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    doc.setFillColor(...errorColor);
+                    doc.rect(10, yPosition, 190, 12, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text('چھٹیوں کی تفصیلات / Day-off Details', 15, yPosition + 8);
+                    
+                    yPosition += 20;
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(10);
+                    
+                    dayOffEntries.forEach((dayOff, index) => {
+                        if (yPosition > 270) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        
+                        doc.setFillColor(255, 245, 245);
+                        doc.rect(10, yPosition, 190, 18, 'F');
+                        doc.setDrawColor(...errorColor);
+                        doc.setLineWidth(1);
+                        doc.rect(10, yPosition, 190, 18, 'S');
+                        
+                        doc.setFont("helvetica", "bold");
+                        doc.text(`${index + 1}. ${formatDate(dayOff.date)}`, 15, yPosition + 8);
+                        
+                        if (dayOff.reason) {
+                            doc.setFont("helvetica", "normal");
+                            doc.text(`وجہ / Reason: ${dayOff.reason}`, 15, yPosition + 15);
+                        }
+                        
+                        if (dayOff.month) {
+                            doc.text(`مہینہ / Month: ${getMonthName(dayOff.month)}`, 120, yPosition + 8);
+                        }
+                        
+                        yPosition += 23;
+                    });
+                }
+                
+                // Final Summary
+                yPosition += 15;
+                if (yPosition > 250) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                
+                doc.setFillColor(...secondaryColor);
+                doc.rect(10, yPosition, 190, 40, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text('حتمی خلاصہ / Final Summary', 15, yPosition + 12);
+                
+                doc.setFontSize(12);
+                doc.text(`کل دن / Total Days: ${totalDays} | کل لیٹر / Total Liters: ${totalLiters.toFixed(1)}`, 15, yPosition + 22);
+                doc.text(`کل بل / Total Bill: ${customerRevenue.toLocaleString()} PKR`, 15, yPosition + 30);
+                doc.text(`باقی رقم / Remaining Amount: ${customerPending.toLocaleString()} PKR`, 15, yPosition + 38);
+                
+                // Footer on all pages
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFillColor(...primaryColor);
+                    doc.rect(0, 285, 210, 12, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(10);
+                    doc.text(`${customer.name} کی رپورٹ / Report | ${new Date().toLocaleDateString('ur-PK')} | صفحہ / Page ${i}/${pageCount}`, 105, 292, { align: 'center' });
+                }
                 
                 return doc.output('blob');
                 
@@ -1609,48 +1849,41 @@
                 
                 // Beautiful header
                 doc.setFillColor(...primaryColor);
-                doc.rect(0, 0, 210, 40, 'F');
+                doc.rect(0, 0, 210, 50, 'F');
                 doc.setFillColor(...secondaryColor);
-                doc.rect(0, 30, 210, 10, 'F');
+                doc.rect(0, 35, 210, 15, 'F');
                 
                 doc.setTextColor(255, 255, 255);
-                doc.setFontSize(24);
+                doc.setFontSize(28);
                 doc.setFont("helvetica", "bold");
                 doc.text('دودھ کا کاروبار - مکمل رپورٹ', 105, 20, { align: 'center' });
                 
-                doc.setFontSize(14);
+                doc.setFontSize(16);
                 doc.setFont("helvetica", "normal");
                 doc.text('Milk Business - Complete Report', 105, 30, { align: 'center' });
                 
-                yPosition = 50;
+                doc.setFontSize(12);
+                doc.text(`تاریخ / Date: ${new Date().toLocaleDateString('ur-PK')}`, 105, 42, { align: 'center' });
+                
+                yPosition = 60;
                 
                 doc.setTextColor(0, 0, 0);
                 
-                // Summary section
-                doc.setFillColor(248, 249, 250);
-                doc.rect(10, yPosition, 190, 50, 'F');
-                doc.setDrawColor(...primaryColor);
-                doc.setLineWidth(2);
-                doc.rect(10, yPosition, 190, 50, 'S');
-                
-                yPosition += 10;
-                
-                doc.setFontSize(16);
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(...primaryColor);
-                doc.text('کاروباری خلاصہ - Business Summary', 15, yPosition);
-                
-                yPosition += 15;
-                
+                // Calculate business totals
                 let totalRevenue = 0;
                 let totalPayments = 0;
+                let totalLiters = 0;
+                let totalDays = 0;
                 
                 customers.forEach(customer => {
                     if (customer.entries) {
                         customer.entries.forEach(entry => {
                             if (entry.type === 'delivery') {
                                 const days = calculateDays(entry.fromDate, entry.toDate);
-                                totalRevenue += days * entry.liters * entry.rate;
+                                const liters = days * entry.liters;
+                                totalRevenue += liters * entry.rate;
+                                totalLiters += liters;
+                                totalDays += days;
                             }
                         });
                     }
@@ -1664,33 +1897,50 @@
                 
                 const pendingAmount = totalRevenue - totalPayments;
                 
+                // Business Summary Section
+                doc.setFillColor(248, 249, 250);
+                doc.rect(10, yPosition, 190, 55, 'F');
+                doc.setDrawColor(...primaryColor);
+                doc.setLineWidth(2);
+                doc.rect(10, yPosition, 190, 55, 'S');
+                
+                yPosition += 12;
+                
+                doc.setFontSize(18);
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(...primaryColor);
+                doc.text('کاروباری خلاصہ / Business Summary', 15, yPosition);
+                
+                yPosition += 15;
+                
+                // Summary in organized layout
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(0, 0, 0);
                 
-                doc.text(`کل گاہک - Total Customers: ${customers.length}`, 15, yPosition);
+                doc.text(`کل گاہک / Total Customers: ${customers.length}`, 15, yPosition);
+                doc.text(`کل دن / Total Days: ${totalDays}`, 110, yPosition);
                 yPosition += 8;
                 
+                doc.text(`کل لیٹر / Total Liters: ${totalLiters.toFixed(1)}`, 15, yPosition);
                 doc.setTextColor(...successColor);
-                doc.text(`کل آمدنی - Total Revenue: ${totalRevenue.toLocaleString()} PKR`, 15, yPosition);
+                doc.text(`کل آمدنی / Total Revenue: ${totalRevenue.toLocaleString()} PKR`, 110, yPosition);
                 yPosition += 8;
                 
                 doc.setTextColor(...primaryColor);
-                doc.text(`وصول شدہ - Total Received: ${totalPayments.toLocaleString()} PKR`, 15, yPosition);
-                yPosition += 8;
-                
-                doc.setTextColor(...errorColor);
-                doc.text(`باقی رقم - Total Pending: ${pendingAmount.toLocaleString()} PKR`, 15, yPosition);
+                doc.text(`وصول شدہ / Total Received: ${totalPayments.toLocaleString()} PKR`, 15, yPosition);
+                doc.setTextColor(pendingAmount > 0 ? errorColor : successColor);
+                doc.text(`باقی رقم / Total Pending: ${pendingAmount.toLocaleString()} PKR`, 110, yPosition);
                 
                 yPosition += 25;
                 
-                // Customer Details
+                // Customer Details Header
                 doc.setFillColor(...primaryColor);
                 doc.rect(10, yPosition, 190, 12, 'F');
                 doc.setTextColor(255, 255, 255);
-                doc.setFontSize(14);
+                doc.setFontSize(16);
                 doc.setFont("helvetica", "bold");
-                doc.text('گاہکوں کی تفصیلات - Customer Details', 15, yPosition + 8);
+                doc.text('گاہکوں کی تفصیلات / Customer Details', 15, yPosition + 8);
                 
                 yPosition += 20;
                 
@@ -1699,40 +1949,46 @@
                 doc.setFont("helvetica", "normal");
                 
                 customers.forEach((customer, index) => {
-                    if (yPosition > 260) {
+                    if (yPosition > 250) {
                         doc.addPage();
                         yPosition = 20;
                     }
                     
+                    // Customer card with better design
                     doc.setDrawColor(...primaryColor);
-                    doc.setLineWidth(1);
-                    doc.rect(10, yPosition - 5, 190, 35, 'S');
+                    doc.setLineWidth(1.5);
+                    doc.rect(10, yPosition - 5, 190, 40, 'S');
                     
+                    // Customer number badge
                     doc.setFillColor(...secondaryColor);
-                    doc.rect(10, yPosition - 5, 20, 10, 'F');
+                    doc.rect(10, yPosition - 5, 25, 12, 'F');
                     doc.setTextColor(255, 255, 255);
                     doc.setFont("helvetica", "bold");
-                    doc.text(`${index + 1}`, 20, yPosition + 2, { align: 'center' });
+                    doc.setFontSize(10);
+                    doc.text(`${index + 1}`, 22.5, yPosition + 2, { align: 'center' });
                     
+                    // Customer name and phone
                     doc.setTextColor(0, 0, 0);
                     doc.setFont("helvetica", "bold");
-                    doc.setFontSize(12);
-                    doc.text(`${customer.name}`, 35, yPosition + 2);
+                    doc.setFontSize(14);
+                    doc.text(`${customer.name}`, 40, yPosition + 2);
                     
-                    yPosition += 10;
-                    
-                    doc.setFontSize(10);
                     doc.setFont("helvetica", "normal");
-                    doc.text(`فون - Phone: ${customer.phone || 'N/A'}`, 15, yPosition);
+                    doc.setFontSize(10);
+                    doc.text(`فون / Phone: ${customer.phone || 'نہیں دیا گیا / Not Provided'}`, 40, yPosition + 10);
                     
+                    // Calculate customer totals
                     let customerRevenue = 0;
                     let customerPayments = 0;
+                    let customerLiters = 0;
                     
                     if (customer.entries) {
                         customer.entries.forEach(entry => {
                             if (entry.type === 'delivery') {
                                 const days = calculateDays(entry.fromDate, entry.toDate);
-                                customerRevenue += days * entry.liters * entry.rate;
+                                const liters = days * entry.liters;
+                                customerRevenue += liters * entry.rate;
+                                customerLiters += liters;
                             }
                         });
                     }
@@ -1745,22 +2001,63 @@
                     
                     const customerPending = customerRevenue - customerPayments;
                     
-                    yPosition += 8;
+                    yPosition += 18;
+                    doc.text(`کل لیٹر / Total Liters: ${customerLiters.toFixed(1)}`, 15, yPosition);
                     doc.setTextColor(...successColor);
-                    doc.text(`کل بل - Total Bill: ${customerRevenue.toLocaleString()} PKR`, 15, yPosition);
+                    doc.text(`کل بل / Total Bill: ${customerRevenue.toLocaleString()} PKR`, 15, yPosition + 7);
                     
-                    yPosition += 6;
                     doc.setTextColor(...primaryColor);
-                    doc.text(`ادا شدہ - Paid: ${customerPayments.toLocaleString()} PKR`, 15, yPosition);
-                    
-                    yPosition += 6;
+                    doc.text(`ادا شدہ / Paid: ${customerPayments.toLocaleString()} PKR`, 110, yPosition);
                     doc.setTextColor(customerPending > 0 ? errorColor : successColor);
-                    doc.text(`باقی - Remaining: ${customerPending.toLocaleString()} PKR`, 15, yPosition);
+                    doc.text(`باقی / Remaining: ${customerPending.toLocaleString()} PKR`, 110, yPosition + 7);
                     
-                    yPosition += 15;
+                    yPosition += 20;
                 });
                 
-                // Footer
+                // Monthly breakdown if space allows
+                if (yPosition < 200) {
+                    yPosition += 10;
+                    doc.setFillColor(...warningColor);
+                    doc.rect(10, yPosition, 190, 12, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text('ماہانہ تجزیہ / Monthly Analysis', 15, yPosition + 8);
+                    
+                    yPosition += 20;
+                    
+                    // Current month analysis
+                    const currentMonth = new Date().toISOString().slice(0, 7);
+                    let monthlyRevenue = 0;
+                    let monthlyPayments = 0;
+                    
+                    customers.forEach(customer => {
+                        if (customer.entries) {
+                            customer.entries.forEach(entry => {
+                                if (entry.type === 'delivery') {
+                                    const entryMonth = entry.month || (entry.date ? entry.date.substring(0, 7) : null);
+                                    if (entryMonth === currentMonth) {
+                                        const days = calculateDays(entry.fromDate, entry.toDate);
+                                        monthlyRevenue += days * entry.liters * entry.rate;
+                                    }
+                                } else if (entry.type === 'payment') {
+                                    const paymentMonth = entry.month || (entry.date ? entry.date.substring(0, 7) : null);
+                                    if (paymentMonth === currentMonth) {
+                                        monthlyPayments += parseFloat(entry.amount);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(12);
+                    doc.text(`اس ماہ آمدنی / This Month Revenue: ${monthlyRevenue.toLocaleString()} PKR`, 15, yPosition);
+                    yPosition += 8;
+                    doc.text(`اس ماہ وصولی / This Month Collection: ${monthlyPayments.toLocaleString()} PKR`, 15, yPosition);
+                }
+                
+                // Footer on all pages
                 const pageCount = doc.internal.getNumberOfPages();
                 for (let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
@@ -1768,12 +2065,12 @@
                     doc.rect(0, 285, 210, 12, 'F');
                     doc.setTextColor(255, 255, 255);
                     doc.setFontSize(10);
-                    doc.text(`تاریخ - Date: ${new Date().toLocaleDateString('ur-PK')} | صفحہ ${i} از ${pageCount}`, 105, 292, { align: 'center' });
+                    doc.text(`دودھ کا کاروبار / Milk Business | ${new Date().toLocaleDateString('ur-PK')} | صفحہ / Page ${i} از / of ${pageCount}`, 105, 292, { align: 'center' });
                 }
                 
                 const fileName = `دودھ_کا_کاروبار_مکمل_رپورٹ_${new Date().toISOString().split('T')[0]}.pdf`;
                 doc.save(fileName);
-                showNotification('خوبصورت PDF رپورٹ ڈاؤن لوڈ مکمل!', 'success');
+                showNotification('خوبصورت مکمل PDF رپورٹ ڈاؤن لوڈ مکمل!', 'success');
                 
             } catch (error) {
                 console.error('PDF generation error:', error);
@@ -1791,101 +2088,260 @@
                 const successColor = [76, 175, 80];
                 const warningColor = [255, 152, 0];
                 const infoColor = [33, 150, 243];
+                const errorColor = [244, 67, 54];
                 
                 const currentMonth = new Date().toISOString().slice(0, 7);
                 const monthName = getMonthName(currentMonth);
                 
                 let yPosition = 20;
                 
-                // Header
+                // Beautiful header
                 doc.setFillColor(...primaryColor);
-                doc.rect(0, 0, 210, 35, 'F');
+                doc.rect(0, 0, 210, 45, 'F');
                 doc.setFillColor(...secondaryColor);
-                doc.rect(0, 25, 210, 10, 'F');
+                doc.rect(0, 30, 210, 15, 'F');
                 
                 doc.setTextColor(255, 255, 255);
-                doc.setFontSize(22);
+                doc.setFontSize(24);
                 doc.setFont("helvetica", "bold");
-                doc.text('ماہانہ رپورٹ - Monthly Report', 105, 18, { align: 'center' });
+                doc.text('ماہانہ رپورٹ / Monthly Report', 105, 18, { align: 'center' });
                 
-                doc.setFontSize(14);
+                doc.setFontSize(16);
                 doc.text(monthName, 105, 28, { align: 'center' });
                 
-                yPosition = 45;
+                doc.setFontSize(12);
+                doc.text(`تیار کردہ / Generated: ${new Date().toLocaleDateString('ur-PK')}`, 105, 38, { align: 'center' });
+                
+                yPosition = 55;
                 
                 // Calculate monthly data
                 let monthlyRevenue = 0;
                 let monthlyPayments = 0;
                 let monthlyCustomers = 0;
+                let monthlyLiters = 0;
+                let monthlyDays = 0;
+                let activeCustomersThisMonth = [];
                 
                 customers.forEach(customer => {
                     let hasMonthlyActivity = false;
+                    let customerMonthlyRevenue = 0;
+                    let customerMonthlyPayments = 0;
                     
                     if (customer.entries) {
                         customer.entries.forEach(entry => {
-                            const entryDate = entry.date || entry.fromDate;
-                            if (entryDate && entryDate.startsWith(currentMonth)) {
+                            const entryMonth = entry.month || (entry.date ? entry.date.substring(0, 7) : null);
+                            if (entryMonth === currentMonth) {
                                 hasMonthlyActivity = true;
                                 if (entry.type === 'delivery') {
                                     const days = calculateDays(entry.fromDate, entry.toDate);
-                                    monthlyRevenue += days * entry.liters * entry.rate;
+                                    const liters = days * entry.liters;
+                                    const amount = liters * entry.rate;
+                                    monthlyRevenue += amount;
+                                    monthlyLiters += liters;
+                                    monthlyDays += days;
+                                    customerMonthlyRevenue += amount;
+                                } else if (entry.type === 'payment') {
+                                    monthlyPayments += parseFloat(entry.amount);
+                                    customerMonthlyPayments += parseFloat(entry.amount);
                                 }
-                            }
-                        });
-                    }
-                    
-                    if (customer.payments) {
-                        customer.payments.forEach(payment => {
-                            if (payment.date && payment.date.startsWith(currentMonth)) {
-                                hasMonthlyActivity = true;
-                                monthlyPayments += parseFloat(payment.amount);
                             }
                         });
                     }
                     
                     if (hasMonthlyActivity) {
                         monthlyCustomers++;
+                        activeCustomersThisMonth.push({
+                            name: customer.name,
+                            phone: customer.phone,
+                            revenue: customerMonthlyRevenue,
+                            payments: customerMonthlyPayments,
+                            pending: customerMonthlyRevenue - customerMonthlyPayments
+                        });
                     }
                 });
                 
                 const monthlyPending = monthlyRevenue - monthlyPayments;
                 
-                // Summary cards
-                const cardWidth = 85;
-                const cardHeight = 35;
-                const cardSpacing = 10;
-                
-                doc.setFillColor(...successColor);
-                doc.rect(15, yPosition, cardWidth, cardHeight, 'F');
-                doc.setDrawColor(255, 255, 255);
+                // Monthly Summary Cards
+                doc.setFillColor(248, 249, 250);
+                doc.rect(10, yPosition, 190, 60, 'F');
+                doc.setDrawColor(...primaryColor);
                 doc.setLineWidth(2);
-                doc.rect(15, yPosition, cardWidth, cardHeight, 'S');
+                doc.rect(10, yPosition, 190, 60, 'S');
                 
-                doc.setTextColor(255, 255, 255);
+                yPosition += 12;
+                doc.setTextColor(...primaryColor);
                 doc.setFontSize(16);
                 doc.setFont("helvetica", "bold");
-                doc.text(`${monthlyRevenue.toLocaleString()}`, 57.5, yPosition + 15, { align: 'center' });
-                doc.setFontSize(10);
-                doc.text('ماہانہ آمدنی', 57.5, yPosition + 25, { align: 'center' });
-                doc.text('Monthly Revenue', 57.5, yPosition + 30, { align: 'center' });
+                doc.text('ماہانہ خلاصہ / Monthly Summary', 15, yPosition);
                 
-                doc.setFillColor(...infoColor);
-                doc.rect(15 + cardWidth + cardSpacing, yPosition, cardWidth, cardHeight, 'F');
-                doc.rect(15 + cardWidth + cardSpacing, yPosition, cardWidth, cardHeight, 'S');
+                yPosition += 15;
                 
-                doc.text(`${monthlyPayments.toLocaleString()}`, 57.5 + cardWidth + cardSpacing, yPosition + 15, { align: 'center' });
-                doc.setFontSize(10);
-                doc.text('وصول شدہ رقم', 57.5 + cardWidth + cardSpacing, yPosition + 25, { align: 'center' });
-                doc.text('Received Amount', 57.5 + cardWidth + cardSpacing, yPosition + 30, { align: 'center' });
+                // First row of summary
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(11);
+                doc.setFont("helvetica", "normal");
                 
-                // Footer
-                doc.setFillColor(...primaryColor);
-                doc.rect(0, 285, 210, 12, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(10);
-                doc.text(`رپورٹ کی تاریخ - Report Date: ${new Date().toLocaleDateString('ur-PK')}`, 105, 292, { align: 'center' });
+                doc.text(`فعال گاہک / Active Customers: ${monthlyCustomers}`, 15, yPosition);
+                doc.text(`کل دن / Total Days: ${monthlyDays}`, 110, yPosition);
+                yPosition += 8;
                 
-                const fileName = `ماہانہ_رپورٹ_${currentMonth}.pdf`;
+                doc.text(`کل لیٹر / Total Liters: ${monthlyLiters.toFixed(1)}`, 15, yPosition);
+                doc.setTextColor(...successColor);
+                doc.text(`ماہانہ آمدنی / Revenue: ${monthlyRevenue.toLocaleString()} PKR`, 110, yPosition);
+                yPosition += 8;
+                
+                doc.setTextColor(...infoColor);
+                doc.text(`وصول شدہ / Received: ${monthlyPayments.toLocaleString()} PKR`, 15, yPosition);
+                doc.setTextColor(monthlyPending > 0 ? errorColor : successColor);
+                doc.text(`باقی رقم / Pending: ${monthlyPending.toLocaleString()} PKR`, 110, yPosition);
+                yPosition += 8;
+                
+                // Performance metrics
+                const avgDailyRevenue = monthlyDays > 0 ? (monthlyRevenue / monthlyDays).toFixed(0) : 0;
+                const collectionRate = monthlyRevenue > 0 ? ((monthlyPayments / monthlyRevenue) * 100).toFixed(1) : 0;
+                
+                doc.setTextColor(0, 0, 0);
+                doc.text(`اوسط روزانہ / Avg Daily: ${avgDailyRevenue} PKR`, 15, yPosition);
+                doc.text(`وصولی فیصد / Collection Rate: ${collectionRate}%`, 110, yPosition);
+                
+                yPosition += 25;
+                
+                // Active Customers This Month
+                if (activeCustomersThisMonth.length > 0) {
+                    doc.setFillColor(...successColor);
+                    doc.rect(10, yPosition, 190, 12, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text('اس ماہ فعال گاہک / Active Customers This Month', 15, yPosition + 8);
+                    
+                    yPosition += 20;
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(10);
+                    
+                    // Sort by revenue (highest first)
+                    activeCustomersThisMonth.sort((a, b) => b.revenue - a.revenue);
+                    
+                    activeCustomersThisMonth.forEach((customer, index) => {
+                        if (yPosition > 260) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        
+                        // Customer monthly card
+                        const cardColor = index < 3 ? [255, 193, 7] : [240, 248, 255]; // Gold for top 3
+                        doc.setFillColor(...cardColor);
+                        doc.rect(10, yPosition, 190, 25, 'F');
+                        doc.setDrawColor(index < 3 ? [255, 193, 7] : infoColor);
+                        doc.setLineWidth(1);
+                        doc.rect(10, yPosition, 190, 25, 'S');
+                        
+                        // Rank badge
+                        if (index < 3) {
+                            const rankColors = [[255, 215, 0], [192, 192, 192], [205, 127, 50]]; // Gold, Silver, Bronze
+                            doc.setFillColor(...rankColors[index]);
+                            doc.circle(20, yPosition + 8, 4, 'F');
+                            doc.setTextColor(0, 0, 0);
+                            doc.setFont("helvetica", "bold");
+                            doc.setFontSize(8);
+                            doc.text(`${index + 1}`, 20, yPosition + 10, { align: 'center' });
+                        } else {
+                            doc.setFillColor(...infoColor);
+                            doc.circle(20, yPosition + 8, 3, 'F');
+                            doc.setTextColor(255, 255, 255);
+                            doc.setFont("helvetica", "bold");
+                            doc.setFontSize(8);
+                            doc.text(`${index + 1}`, 20, yPosition + 10, { align: 'center' });
+                        }
+                        
+                        doc.setTextColor(0, 0, 0);
+                        doc.setFont("helvetica", "bold");
+                        doc.setFontSize(11);
+                        doc.text(`${customer.name}`, 30, yPosition + 8);
+                        
+                        if (customer.phone) {
+                            doc.setFont("helvetica", "normal");
+                            doc.setFontSize(9);
+                            doc.text(`${customer.phone}`, 30, yPosition + 15);
+                        }
+                        
+                        // Financial details
+                        doc.setTextColor(...successColor);
+                        doc.setFont("helvetica", "bold");
+                        doc.setFontSize(10);
+                        doc.text(`آمدنی / Revenue: ${customer.revenue.toLocaleString()}`, 120, yPosition + 6);
+                        
+                        doc.setTextColor(...infoColor);
+                        doc.text(`ادائی / Paid: ${customer.payments.toLocaleString()}`, 120, yPosition + 13);
+                        
+                        doc.setTextColor(customer.pending > 0 ? errorColor : successColor);
+                        doc.text(`باقی / Pending: ${customer.pending.toLocaleString()}`, 120, yPosition + 20);
+                        
+                        yPosition += 30;
+                    });
+                }
+                
+                // Monthly comparison if space allows
+                if (yPosition < 220) {
+                    yPosition += 10;
+                    doc.setFillColor(...warningColor);
+                    doc.rect(10, yPosition, 190, 12, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text('کارکردگی کا جائزہ / Performance Analysis', 15, yPosition + 8);
+                    
+                    yPosition += 20;
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(11);
+                    
+                    // Calculate previous month for comparison
+                    const prevMonth = new Date();
+                    prevMonth.setMonth(prevMonth.getMonth() - 1);
+                    const prevMonthString = prevMonth.toISOString().slice(0, 7);
+                    
+                    let prevMonthRevenue = 0;
+                    customers.forEach(customer => {
+                        if (customer.entries) {
+                            customer.entries.forEach(entry => {
+                                const entryMonth = entry.month || (entry.date ? entry.date.substring(0, 7) : null);
+                                if (entryMonth === prevMonthString && entry.type === 'delivery') {
+                                    const days = calculateDays(entry.fromDate, entry.toDate);
+                                    prevMonthRevenue += days * entry.liters * entry.rate;
+                                }
+                            });
+                        }
+                    });
+                    
+                    const growth = prevMonthRevenue > 0 ? (((monthlyRevenue - prevMonthRevenue) / prevMonthRevenue) * 100).toFixed(1) : 0;
+                    const growthColor = growth >= 0 ? successColor : errorColor;
+                    
+                    doc.text(`پچھلے ماہ آمدنی / Last Month Revenue: ${prevMonthRevenue.toLocaleString()} PKR`, 15, yPosition);
+                    yPosition += 8;
+                    doc.setTextColor(...growthColor);
+                    doc.text(`نمو / Growth: ${growth}%`, 15, yPosition);
+                    
+                    yPosition += 8;
+                    doc.setTextColor(0, 0, 0);
+                    const avgPerCustomer = monthlyCustomers > 0 ? (monthlyRevenue / monthlyCustomers).toFixed(0) : 0;
+                    doc.text(`اوسط فی گاہک / Average per Customer: ${avgPerCustomer} PKR`, 15, yPosition);
+                }
+                
+                // Footer on all pages
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFillColor(...primaryColor);
+                    doc.rect(0, 285, 210, 12, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(10);
+                    doc.text(`${monthName} رپورٹ / Report | دودھ کا کاروبار / Milk Business | صفحہ / Page ${i}/${pageCount}`, 105, 292, { align: 'center' });
+                }
+                
+                const fileName = `ماہانہ_رپورٹ_${currentMonth}_${monthName.replace(/\s/g, '_')}.pdf`;
                 doc.save(fileName);
                 showNotification('خوبصورت ماہانہ PDF رپورٹ ڈاؤن لوڈ مکمل!', 'success');
                 
@@ -2037,17 +2493,155 @@
             if (!customer) return;
             
             // Triple confirmation as requested
-            showConfirm(`⚠️ کیا آپ واقعی "${customer.name}" کو حذف کرنا چاہتے ہیں؟`, () => {
-                showConfirm(`⚠️⚠️ یہ عمل واپس نہیں ہو سکتا! کیا آپ "${customer.name}" کو مکمل طور پر حذف کرنا چاہتے ہیں؟`, () => {
-                    showConfirm(`⚠️⚠️⚠️ آخری تصدیق: "${customer.name}" کا تمام ڈیٹا ہمیشہ کے لیے حذف ہو جائے گا!`, () => {
-                        customers = customers.filter(c => c.id !== customerId);
-                        saveToStorage();
-                        loadCustomers();
-                        updateDashboard();
-                        showNotification(`"${customer.name}" کامیابی سے حذف ہو گیا!`, 'success');
-                    });
-                });
-            });
+            showTripleConfirm(customer, customerId);
+        }
+
+        function showTripleConfirm(customer, customerId) {
+            // First confirmation
+            const confirmDiv1 = document.createElement('div');
+            confirmDiv1.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.7);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            confirmDiv1.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; direction: rtl; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
+                    <h3 style="color: #f44336; margin-bottom: 15px;">پہلی تصدیق</h3>
+                    <p style="margin-bottom: 20px; font-size: 16px;">کیا آپ واقعی "${customer.name}" کو حذف کرنا چاہتے ہیں؟</p>
+                    <div>
+                        <button id="confirm1-yes" style="background: #f44336; color: white; border: none; padding: 12px 20px; border-radius: 5px; margin: 5px; cursor: pointer; font-size: 14px;">ہاں، آگے بڑھیں</button>
+                        <button id="confirm1-no" style="background: #4CAF50; color: white; border: none; padding: 12px 20px; border-radius: 5px; margin: 5px; cursor: pointer; font-size: 14px;">نہیں، منسوخ کریں</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmDiv1);
+            
+            document.getElementById('confirm1-yes').onclick = function() {
+                document.body.removeChild(confirmDiv1);
+                showSecondConfirm(customer, customerId);
+            };
+            
+            document.getElementById('confirm1-no').onclick = function() {
+                document.body.removeChild(confirmDiv1);
+            };
+        }
+
+        function showSecondConfirm(customer, customerId) {
+            // Second confirmation
+            const confirmDiv2 = document.createElement('div');
+            confirmDiv2.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                z-index: 10001;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            confirmDiv2.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; direction: rtl; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 3px solid #ff9800;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">⚠️⚠️</div>
+                    <h3 style="color: #ff9800; margin-bottom: 15px;">دوسری تصدیق</h3>
+                    <p style="margin-bottom: 20px; font-size: 16px; color: #f44336; font-weight: bold;">یہ عمل واپس نہیں ہو سکتا!</p>
+                    <p style="margin-bottom: 20px; font-size: 16px;">کیا آپ "${customer.name}" کو مکمل طور پر حذف کرنا چاہتے ہیں؟</p>
+                    <div>
+                        <button id="confirm2-yes" style="background: #f44336; color: white; border: none; padding: 12px 20px; border-radius: 5px; margin: 5px; cursor: pointer; font-size: 14px;">ہاں، حذف کریں</button>
+                        <button id="confirm2-no" style="background: #4CAF50; color: white; border: none; padding: 12px 20px; border-radius: 5px; margin: 5px; cursor: pointer; font-size: 14px;">نہیں، محفوظ رکھیں</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmDiv2);
+            
+            document.getElementById('confirm2-yes').onclick = function() {
+                document.body.removeChild(confirmDiv2);
+                showFinalConfirm(customer, customerId);
+            };
+            
+            document.getElementById('confirm2-no').onclick = function() {
+                document.body.removeChild(confirmDiv2);
+            };
+        }
+
+        function showFinalConfirm(customer, customerId) {
+            // Final confirmation
+            const confirmDiv3 = document.createElement('div');
+            confirmDiv3.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                z-index: 10002;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            confirmDiv3.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; direction: rtl; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 3px solid #f44336;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">⚠️⚠️⚠️</div>
+                    <h3 style="color: #f44336; margin-bottom: 15px;">آخری تصدیق</h3>
+                    <p style="margin-bottom: 15px; font-size: 18px; color: #f44336; font-weight: bold;">"${customer.name}"</p>
+                    <p style="margin-bottom: 20px; font-size: 16px; color: #333;">کا تمام ڈیٹا ہمیشہ کے لیے حذف ہو جائے گا!</p>
+                    <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <p style="color: #d32f2f; font-size: 14px;">• تمام انٹریز حذف ہوں گی</p>
+                        <p style="color: #d32f2f; font-size: 14px;">• تمام ادائیگیاں حذف ہوں گی</p>
+                        <p style="color: #d32f2f; font-size: 14px;">• یہ عمل واپس نہیں ہو سکتا</p>
+                    </div>
+                    <div>
+                        <button id="confirm3-yes" style="background: #d32f2f; color: white; border: none; padding: 15px 25px; border-radius: 5px; margin: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">حذف کریں</button>
+                        <button id="confirm3-no" style="background: #4CAF50; color: white; border: none; padding: 15px 25px; border-radius: 5px; margin: 5px; cursor: pointer; font-size: 16px;">منسوخ</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmDiv3);
+            
+            document.getElementById('confirm3-yes').onclick = function() {
+                document.body.removeChild(confirmDiv3);
+                performCustomerDeletion(customer, customerId);
+            };
+            
+            document.getElementById('confirm3-no').onclick = function() {
+                document.body.removeChild(confirmDiv3);
+            };
+        }
+
+        function performCustomerDeletion(customer, customerId) {
+            // Remove customer and clean up all data
+            customers = customers.filter(c => c.id !== customerId);
+            
+            // If currently viewing this customer's ledger, go back to customers view
+            if (currentCustomerId === customerId) {
+                currentCustomerId = null;
+                showCustomers();
+            }
+            
+            // Save and update all views
+            saveToStorage();
+            loadCustomers();
+            updateDashboard();
+            
+            // Clear any cached data
+            updateDataManagementStats();
+            
+            showNotification(`"${customer.name}" کامیابی سے حذف ہو گیا!`, 'success');
         }
 
         function getPaymentStatus(customer) {
@@ -2843,6 +3437,7 @@
         }
 
         function showConfirm(message, callback) {
+            // Simple confirmation for non-customer deletion actions
             const confirmDiv = document.createElement('div');
             confirmDiv.style.cssText = `
                 position: fixed;
@@ -2851,7 +3446,7 @@
                 width: 100%;
                 height: 100%;
                 background: rgba(0,0,0,0.5);
-                z-index: 10000;
+                z-index: 9999;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -2861,25 +3456,21 @@
                 <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; direction: rtl; text-align: center;">
                     <p style="margin-bottom: 20px; font-size: 16px;">${message}</p>
                     <div>
-                        <button onclick="confirmYes()" style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">ہاں</button>
-                        <button onclick="confirmNo()" style="background: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">نہیں</button>
+                        <button id="simple-confirm-yes" style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">ہاں</button>
+                        <button id="simple-confirm-no" style="background: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer;">نہیں</button>
                     </div>
                 </div>
             `;
             
             document.body.appendChild(confirmDiv);
             
-            window.confirmYes = function() {
+            document.getElementById('simple-confirm-yes').onclick = function() {
                 document.body.removeChild(confirmDiv);
                 callback();
-                delete window.confirmYes;
-                delete window.confirmNo;
             };
             
-            window.confirmNo = function() {
+            document.getElementById('simple-confirm-no').onclick = function() {
                 document.body.removeChild(confirmDiv);
-                delete window.confirmYes;
-                delete window.confirmNo;
             };
         }
 
