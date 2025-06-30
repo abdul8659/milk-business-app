@@ -717,7 +717,7 @@
                                value="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">
                         <input type="text" id="github-repo" class="github-input" 
                                placeholder="Repository Name (username/repo-name)" 
-                               value="abdul8659/milk-business-app">
+                               value="abdul8659/milk-business-data">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
                             <button type="button" class="github-btn" onclick="setupGitHubBackup()">
                                 🔧 GitHub کنکٹ کریں
@@ -1587,12 +1587,12 @@ Each customer gets their own folder for reports.
 
         // =================== LEGAL SIZE PRINT FUNCTIONS ===================
         
-        async function generateCurrentCustomerLegalSize() {
+        function generateCurrentCustomerLegalSize() {
             if (!currentCustomerId) {
                 showNotification('پہلے گاہک منتخب کریں', 'error');
                 return;
             }
-            await generateCustomerLegalSize(currentCustomerId);
+            generateCustomerLegalSize(currentCustomerId);
         }
 
         async function generateCustomerLegalSize(customerId) {
