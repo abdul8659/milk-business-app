@@ -704,20 +704,22 @@
                     <div class="alert alert-info" style="margin: 15px 0;">
                         <h4>📋 پہلے یہ کام کریں:</h4>
                         <ol style="text-align: right; padding-right: 20px; margin: 10px 0;">
-                            <li><strong>GitHub Repository بنائیں:</strong> GitHub.com پر جا کر "abdul8659/milk-business-data" نام سے repository بنائیں</li>
+                            <li><strong>GitHub Repository بنائیں:</strong> GitHub.com پر جا کر "abdul8659/milk-business-app" نام سے repository بنائیں</li>
+                            <li><strong>Valid GitHub Token داخل کریں:</strong> GitHub Settings > Developer settings > Personal access tokens سے نیا token بنائیں</li>
                             <li><strong>Repository Public رکھیں</strong> یا اپنے token کو proper permissions دیں</li>
-                            <li><strong>نیچے دیا گیا token اور repo name استعمال کریں</strong></li>
+                            <li><strong>نیچے token اور repo name داخل کر کے کنکٹ کریں</strong></li>
                         </ol>
+                        <p><strong>⚠️ نوٹ:</strong> پرانا token expire ہو گیا ہے، نیا token داخل کریں</p>
                         <p><strong>📁 Directory Structure:</strong> <code>backups/</code>, <code>reports/customers/</code>, <code>reports/all_customers/</code>, <code>reports/business_summary/</code></p>
                     </div>
                     
                     <div class="github-form">
                         <input type="password" id="github-token" class="github-input" 
                                placeholder="GitHub Personal Access Token (ghp_...)" 
-                               value="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">
+                               value="">
                         <input type="text" id="github-repo" class="github-input" 
                                placeholder="Repository Name (username/repo-name)" 
-                               value="abdul8659/milk-business-data">
+                               value="abdul8659/milk-business-app">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
                             <button type="button" class="github-btn" onclick="setupGitHubBackup()">
                                 🔧 GitHub کنکٹ کریں
@@ -1587,12 +1589,12 @@ Each customer gets their own folder for reports.
 
         // =================== LEGAL SIZE PRINT FUNCTIONS ===================
         
-        function generateCurrentCustomerLegalSize() {
+        async function generateCurrentCustomerLegalSize() {
             if (!currentCustomerId) {
                 showNotification('پہلے گاہک منتخب کریں', 'error');
                 return;
             }
-            generateCustomerLegalSize(currentCustomerId);
+            await generateCustomerLegalSize(currentCustomerId);
         }
 
         async function generateCustomerLegalSize(customerId) {
