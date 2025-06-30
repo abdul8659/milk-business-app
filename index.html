@@ -618,13 +618,45 @@
                         <li><strong>✅ Month Filtering:</strong> Improved date analysis and filtering</li>
                         <li><strong>✅ Auto GitHub Storage:</strong> HTML reports automatically saved to GitHub</li>
                         <li><strong>✅ Data Migration:</strong> Previous entries automatically updated</li>
-                        <li><strong>✅ Backup Integration:</strong> Enhanced GitHub integration</li>
+                        <li><strong>✅ Beautiful WhatsApp:</strong> Enhanced Urdu formatting for ledgers</li>
+                        <li><strong>✅ Network Error Handling:</strong> Better GitHub connectivity</li>
                     </ul>
                     <div style="margin-top: 15px;">
-                        <button class="btn success" onclick="fixExistingEntries()">🔧 Fix Previous Entries</button>
+                        <button class="btn success" onclick="fixExistingEntries()" title="Manually fix any entry issues">🔧 Fix Previous Entries</button>
                         <button class="btn warning" onclick="addSampleData()">📝 Sample Data شامل کریں</button>
                         <button class="btn info" onclick="generateLegalSizeLedger()">🖨️ Legal Size Test</button>
                     </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <h3>🩺 Troubleshooting Guide:</h3>
+                    <details style="margin: 10px 0;">
+                        <summary style="cursor: pointer; font-weight: bold;">❓ Previous entries not showing?</summary>
+                        <ul style="margin: 10px 0; padding-right: 20px;">
+                            <li>Click "🔧 Fix Previous Entries" button above</li>
+                            <li>Check browser console (F12) for detailed logs</li>
+                            <li>Try refreshing the page</li>
+                            <li>Use "🔍 Debug Data" button to inspect data</li>
+                        </ul>
+                    </details>
+                    <details style="margin: 10px 0;">
+                        <summary style="cursor: pointer; font-weight: bold;">🌐 GitHub connection issues?</summary>
+                        <ul style="margin: 10px 0; padding-right: 20px;">
+                            <li>Check your internet connection</li>
+                            <li>Try "🔗 کنکشن ٹیسٹ" in Backup section</li>
+                            <li>Reports still save locally even if GitHub fails</li>
+                            <li>CORS errors are normal - reports still download</li>
+                        </ul>
+                    </details>
+                    <details style="margin: 10px 0;">
+                        <summary style="cursor: pointer; font-weight: bold;">📱 WhatsApp formatting issues?</summary>
+                        <ul style="margin: 10px 0; padding-right: 20px;">
+                            <li>WhatsApp should show beautiful Urdu formatting</li>
+                            <li>Numbers are formatted in Urdu locale</li>
+                            <li>Emojis and symbols make it more readable</li>
+                            <li>Try sending to yourself first to test</li>
+                        </ul>
+                    </details>
                 </div>
             </div>
 
@@ -943,23 +975,38 @@
         });
 
         function initializeApp() {
+            console.log('🚀 Initializing Milk Business App...');
+            
             loadFromStorage();
+            console.log('📦 Loaded from storage:', customers.length, 'customers');
+            
             showDashboard();
             updateDashboard();
             loadCustomers();
             initializeBackupSettings();
             
+            // Add debug functionality
+            setTimeout(() => {
+                addDebugButton();
+            }, 1000);
+            
             // Automatically fix existing entries on startup
-            fixExistingEntries();
+            const fixedCount = fixExistingEntries();
+            console.log('🔧 Fixed', fixedCount, 'entries');
+            
+            // Log successful initialization
+            console.log('✅ App initialized successfully');
+            updateBackupStatus('✅ App Ready - ' + customers.length + ' customers loaded');
         }
 
         // =================== ENHANCED ENTRY ID FIXING ===================
         
         function fixExistingEntries() {
+            console.log('🔧 Starting to fix existing entries...');
             let totalFixed = 0;
             let customersFixed = 0;
             
-            customers.forEach(customer => {
+            customers.forEach((customer, customerIndex) => {
                 if (customer.entries && customer.entries.length > 0) {
                     let customerFixed = false;
                     
@@ -970,6 +1017,7 @@
                             entry.id = Date.now() + index + Math.random() * 1000;
                             totalFixed++;
                             customerFixed = true;
+                            console.log(`Fixed entry ID for ${customer.name}:`, entry.id);
                         }
                         
                         // Ensure entry has createdAt timestamp
@@ -1017,13 +1065,14 @@
                     
                     if (customerFixed) {
                         customersFixed++;
+                        console.log(`Fixed entries for customer: ${customer.name}`);
                     }
                 }
             });
             
             if (totalFixed > 0) {
                 saveToStorage();
-                console.log(`Fixed ${totalFixed} entries for ${customersFixed} customers`);
+                console.log(`✅ Fixed ${totalFixed} entries for ${customersFixed} customers`);
                 updateBackupStatus(`🔧 Fixed ${totalFixed} entries automatically`);
                 
                 // Show notification
@@ -1031,8 +1080,10 @@
                     showNotification(`✅ ${totalFixed} entries automatically fixed!`, 'success');
                 }, 1000);
             } else {
-                console.log('All entries are properly formatted');
+                console.log('✅ All entries are properly formatted');
             }
+            
+            return totalFixed;
         }
 
         // =================== ENHANCED ENTRY EDITING WITH SMART DETECTION ===================
@@ -1285,17 +1336,19 @@
             const dateStr = new Date().toISOString().split('T')[0];
             const fileName = `${customer.name.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, '_')}_LegalSize_${dateStr}.html`;
             
-            // Download locally
+            // Always download locally first
             downloadHTMLFile(htmlContent, fileName);
             
-            // Auto-save to GitHub if enabled and connected
+            // Try GitHub auto-save if enabled and connected (but don't fail if it doesn't work)
             if (autoSave && gitHubSettings.token && gitHubSettings.repo) {
                 try {
                     const customerFolderName = customer.name.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, '_');
                     const folderPath = `reports/customers/${customerFolderName}`;
                     
-                    // Ensure customer directory exists
-                    await createGitHubDirectory(folderPath);
+                    // Try to create directory first (but don't fail if it doesn't work)
+                    await createGitHubDirectory(folderPath).catch(() => {
+                        console.log('Directory creation skipped');
+                    });
                     
                     const githubUrl = await saveHTMLToGitHub(htmlContent, fileName, folderPath);
                     if (githubUrl) {
@@ -1303,17 +1356,19 @@
                         console.log('Customer report auto-saved to GitHub:', githubUrl);
                         updateBackupStatus('✅ HTML Report auto-saved to GitHub');
                     } else {
-                        showNotification(`${customer.name} کی Legal Size پرنٹ فائل تیار! (GitHub save فیل)`, 'warning');
+                        // GitHub save failed but that's okay
+                        showNotification(`${customer.name} کی Legal Size پرنٹ فائل تیار! (GitHub سیو فیل لیکن Local OK)`, 'success');
                     }
                 } catch (error) {
-                    console.error('GitHub auto-save error:', error);
-                    showNotification(`${customer.name} کی Legal Size پرنٹ فائل تیار! (Local only)`, 'success');
+                    console.warn('GitHub auto-save error (non-critical):', error.message);
+                    showNotification(`${customer.name} کی Legal Size پرنٹ فائل تیار! (Local file ready)`, 'success');
                 }
             } else {
+                // GitHub not configured
                 showNotification(`${customer.name} کی Legal Size پرنٹ فائل تیار!`, 'success');
                 if (!gitHubSettings.token || !gitHubSettings.repo) {
                     setTimeout(() => {
-                        showNotification('GitHub auto-save کے لیے پہلے GitHub سیٹ اپ کریں', 'info');
+                        showNotification('💡 GitHub auto-save کے لیے Backup section میں جا کر سیٹ اپ کریں', 'info');
                     }, 2000);
                 }
             }
@@ -1331,16 +1386,18 @@
             const dateStr = new Date().toISOString().split('T')[0];
             const fileName = `All_Customers_LegalSize_${dateStr}.html`;
             
-            // Download locally
+            // Always download locally first
             downloadHTMLFile(htmlContent, fileName);
             
-            // Auto-save to GitHub if connected
+            // Try GitHub auto-save if connected (but don't fail if it doesn't work)
             if (gitHubSettings.token && gitHubSettings.repo) {
                 try {
                     const folderPath = 'reports/all_customers';
                     
-                    // Ensure directory exists
-                    await createGitHubDirectory(folderPath);
+                    // Try to create directory (but don't fail if it doesn't work)
+                    await createGitHubDirectory(folderPath).catch(() => {
+                        console.log('Directory creation skipped');
+                    });
                     
                     const githubUrl = await saveHTMLToGitHub(htmlContent, fileName, folderPath);
                     if (githubUrl) {
@@ -1348,11 +1405,11 @@
                         console.log('All customers report auto-saved to GitHub:', githubUrl);
                         updateBackupStatus('✅ All Customers HTML Report auto-saved');
                     } else {
-                        showNotification('تمام گاہکوں کی Legal Size رپورٹ تیار! (GitHub save فیل)', 'warning');
+                        showNotification('تمام گاہکوں کی Legal Size رپورٹ تیار! (GitHub سیو فیل لیکن Local OK)', 'success');
                     }
                 } catch (error) {
-                    console.error('GitHub auto-save error:', error);
-                    showNotification('تمام گاہکوں کی Legal Size رپورٹ تیار! (Local only)', 'success');
+                    console.warn('GitHub auto-save error (non-critical):', error.message);
+                    showNotification('تمام گاہکوں کی Legal Size رپورٹ تیار! (Local file ready)', 'success');
                 }
             } else {
                 showNotification('تمام گاہکوں کی Legal Size رپورٹ تیار!', 'success');
@@ -1471,7 +1528,27 @@
         
         function loadLedgerEntries(customerId) {
             const customer = customers.find(c => c.id === customerId);
-            loadLedgerEntriesFiltered(customer.entries || []);
+            if (!customer) {
+                console.error('Customer not found:', customerId);
+                return;
+            }
+            
+            console.log('Loading entries for customer:', customer.name, 'Entries:', customer.entries);
+            
+            // Ensure entries exist and are properly formatted
+            if (!customer.entries) {
+                customer.entries = [];
+            }
+            
+            // Fix any entries that might be missing IDs
+            customer.entries.forEach((entry, index) => {
+                if (!entry.id) {
+                    entry.id = Date.now() + index;
+                    console.log('Fixed entry ID:', entry.id);
+                }
+            });
+            
+            loadLedgerEntriesFiltered(customer.entries);
         }
 
         function loadLedgerEntriesFiltered(entries) {
@@ -1730,11 +1807,57 @@
             currentCustomerId = customerId;
             const customer = customers.find(c => c.id === customerId);
             
+            if (!customer) {
+                showNotification('گاہک نہیں ملا', 'error');
+                console.error('Customer not found with ID:', customerId);
+                return;
+            }
+            
+            console.log('Showing ledger for customer:', customer.name);
+            console.log('Customer entries:', customer.entries);
+            
             document.getElementById('ledger-title').textContent = `${customer.name} کا کھاتہ`;
             showSection('ledger-section');
             
             // Set current month by default
             setCurrentMonth();
+            
+            // Force load entries
+            setTimeout(() => {
+                loadLedgerEntries(customerId);
+            }, 100);
+        }
+
+        // Debug function to check data
+        function debugCustomerData() {
+            console.log('=== DEBUG: Customer Data ===');
+            console.log('Total customers:', customers.length);
+            customers.forEach((customer, index) => {
+                console.log(`Customer ${index + 1}:`, {
+                    id: customer.id,
+                    name: customer.name,
+                    entriesCount: customer.entries ? customer.entries.length : 0,
+                    entries: customer.entries
+                });
+            });
+            console.log('Current customer ID:', currentCustomerId);
+        }
+
+        // Add this to the dashboard for debugging
+        function addDebugButton() {
+            const dashboardSection = document.getElementById('dashboard-section');
+            if (dashboardSection) {
+                const debugBtn = document.createElement('button');
+                debugBtn.className = 'btn info';
+                debugBtn.textContent = '🔍 Debug Data';
+                debugBtn.onclick = debugCustomerData;
+                debugBtn.style.margin = '10px';
+                
+                const existingDebugBtn = dashboardSection.querySelector('[onclick="debugCustomerData()"]');
+                if (!existingDebugBtn) {
+                    dashboardSection.appendChild(debugBtn);
+                }
+            }
         }
 
         function searchCustomers() {
@@ -2294,6 +2417,7 @@ Each customer gets their own folder for reports.
 
         async function saveHTMLToGitHub(htmlContent, fileName, folderPath = '') {
             if (!gitHubSettings.token || !gitHubSettings.repo) {
+                console.warn('GitHub not configured, skipping auto-save');
                 return false;
             }
             
@@ -2306,7 +2430,8 @@ Each customer gets their own folder for reports.
                     const checkResponse = await fetch(`https://api.github.com/repos/${gitHubSettings.repo}/contents/${fullPath}`, {
                         headers: {
                             'Authorization': `token ${gitHubSettings.token}`,
-                            'User-Agent': 'Milk-Business-App/1.0'
+                            'User-Agent': 'Milk-Business-App/1.0',
+                            'Accept': 'application/vnd.github.v3+json'
                         }
                     });
                     if (checkResponse.ok) {
@@ -2314,7 +2439,7 @@ Each customer gets their own folder for reports.
                         sha = fileData.sha;
                     }
                 } catch (e) {
-                    // File doesn't exist, which is fine
+                    console.log('File does not exist, creating new file');
                 }
                 
                 const body = {
@@ -2335,7 +2460,8 @@ Each customer gets their own folder for reports.
                     headers: {
                         'Authorization': `token ${gitHubSettings.token}`,
                         'Content-Type': 'application/json',
-                        'User-Agent': 'Milk-Business-App/1.0'
+                        'User-Agent': 'Milk-Business-App/1.0',
+                        'Accept': 'application/vnd.github.v3+json'
                     },
                     body: JSON.stringify(body)
                 });
@@ -2346,11 +2472,19 @@ Each customer gets their own folder for reports.
                     return responseData.content.html_url;
                 } else {
                     const errorData = await response.json();
+                    console.error('GitHub API error:', errorData);
                     throw new Error(errorData.message || 'HTML save failed');
                 }
                 
             } catch (error) {
                 console.error('HTML save error:', error);
+                
+                // Check if it's a network/CORS error
+                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    showNotification('GitHub auto-save فیل - نیٹ ورک کی خرابی (Local save مکمل)', 'warning');
+                } else {
+                    showNotification('GitHub auto-save میں خرابی: ' + error.message, 'warning');
+                }
                 return false;
             }
         }
@@ -2369,7 +2503,8 @@ Each customer gets their own folder for reports.
                     headers: {
                         'Authorization': `token ${gitHubSettings.token}`,
                         'Content-Type': 'application/json',
-                        'User-Agent': 'Milk-Business-App/1.0'
+                        'User-Agent': 'Milk-Business-App/1.0',
+                        'Accept': 'application/vnd.github.v3+json'
                     },
                     body: JSON.stringify({
                         message: `📁 Create directory: ${dirPath}`,
@@ -2383,7 +2518,8 @@ Each customer gets their own folder for reports.
                 
                 return response.ok;
             } catch (error) {
-                console.error('Directory creation error:', error);
+                console.warn('Directory creation warning:', error.message);
+                // Don't show error to user for directory creation as it's not critical
                 return false;
             }
         }
@@ -2415,7 +2551,12 @@ Each customer gets their own folder for reports.
                 const fileName = `backup_${new Date().toISOString().split('T')[0]}_${Date.now()}.json`;
                 const backupPath = `backups/${fileName}`;
                 
-                await createGitHubDirectory('backups');
+                // Try to create directory first, but don't fail if it doesn't work
+                try {
+                    await createGitHubDirectory('backups');
+                } catch (e) {
+                    console.warn('Could not create backups directory, continuing anyway');
+                }
                 
                 const body = {
                     message: `💾 دودھ کا کاروبار - Fixed Version Backup ${new Date().toLocaleString('ur-PK')} - ${customers.length} customers`,
@@ -2431,7 +2572,8 @@ Each customer gets their own folder for reports.
                     headers: {
                         'Authorization': `token ${gitHubSettings.token}`,
                         'Content-Type': 'application/json',
-                        'User-Agent': 'Milk-Business-App/1.0'
+                        'User-Agent': 'Milk-Business-App/1.0',
+                        'Accept': 'application/vnd.github.v3+json'
                     },
                     body: JSON.stringify(body)
                 });
@@ -2445,13 +2587,20 @@ Each customer gets their own folder for reports.
                     console.log('Backup successful:', responseData.content.html_url);
                 } else {
                     const errorData = await response.json();
+                    console.error('GitHub backup error:', errorData);
                     throw new Error(errorData.message || 'Backup failed');
                 }
                 
             } catch (error) {
                 console.error('Backup error:', error);
-                showNotification('❌ بیک اپ میں خرابی: ' + error.message, 'error');
-                updateBackupStatus('❌ بیک اپ فیل', 'error');
+                
+                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    showNotification('❌ نیٹ ورک کی خرابی - انٹرنیٹ کنکشن چیک کریں', 'error');
+                    updateBackupStatus('❌ نیٹ ورک ایرر', 'error');
+                } else {
+                    showNotification('❌ بیک اپ میں خرابی: ' + error.message, 'error');
+                    updateBackupStatus('❌ بیک اپ فیل', 'error');
+                }
             }
         }
 
@@ -3547,16 +3696,19 @@ Each customer gets their own folder for reports.
             const selectedMonth = currentCustomerId ? document.getElementById('month-filter')?.value || 'all' : 'all';
             const monthName = selectedMonth === 'all' ? 'مکمل کھاتہ' : getMonthDisplayName(selectedMonth);
             
-            let message = `🥛 *دودھ کا کاروبار - ${monthName}*\n\n`;
-            message += `👤 *گاہک:* ${customer.name}\n`;
+            let message = `🥛 *دودھ کا کاروبار*\n`;
+            message += `═══════════════════════════\n\n`;
+            message += `👤 *گاہک کی تفصیلات:*\n`;
+            message += `📝 نام: ${customer.name}\n`;
             if (customer.phone) {
-                message += `📞 *فون:* ${customer.phone}\n`;
+                message += `📱 فون: ${customer.phone}\n`;
             }
             if (customer.address) {
-                message += `📍 *پتہ:* ${customer.address}\n`;
+                message += `🏠 پتہ: ${customer.address}\n`;
             }
-            message += `📅 *تاریخ:* ${new Date().toLocaleDateString('ur-PK')}\n`;
-            message += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            message += `📅 رپورٹ کی تاریخ: ${new Date().toLocaleDateString('ur-PK')}\n`;
+            message += `⏰ وقت: ${new Date().toLocaleTimeString('ur-PK')}\n\n`;
+            message += `═══════════════════════════\n\n`;
 
             let totalRevenue = 0;
             let totalPayments = 0;
@@ -3595,63 +3747,73 @@ Each customer gets their own folder for reports.
             const currentMonthBalance = totalRevenue - totalPayments;
             const overallBalance = previousBalance + currentMonthBalance;
 
-            message += `📊 *خلاصہ (${monthName}):*\n`;
+            message += `💰 *مالی خلاصہ (${monthName}):*\n`;
+            message += `▫️ `;
             if (previousBalance !== 0) {
-                message += `💰 پچھلے مہینوں کا بیلنس: ${previousBalance} روپے\n`;
+                message += `پچھلا بیلنس: ${previousBalance.toLocaleString('ur-PK')} روپے\n▫️ `;
             }
-            message += `💰 ${selectedMonth === 'all' ? 'کل' : 'اس مہینے کا'} بل: ${totalRevenue} روپے\n`;
-            message += `💳 ادا شدہ: ${totalPayments} روپے\n`;
-            message += `📋 ${selectedMonth === 'all' ? 'کل' : 'مجموعی'} باقی: ${overallBalance} روپے\n`;
-            message += `📝 انٹریز: ${deliveryEntries.length} فراہمی، ${paymentEntries.length} ادائیگی\n\n`;
+            message += `${selectedMonth === 'all' ? 'کل' : 'اس مہینے کا'} بل: ${totalRevenue.toLocaleString('ur-PK')} روپے\n`;
+            message += `▫️ ادا شدہ رقم: ${totalPayments.toLocaleString('ur-PK')} روپے\n`;
+            message += `▫️ باقی رقم: ${overallBalance.toLocaleString('ur-PK')} روپے\n`;
+            message += `▫️ کل انٹریز: ${deliveryEntries.length} فراہمی، ${paymentEntries.length} ادائیگی\n\n`;
 
             if (deliveryEntries.length > 0) {
-                message += `🥛 *دودھ کی فراہمی:*\n`;
+                message += `🥛 *دودھ کی فراہمی کی تفصیل:*\n`;
+                message += `───────────────────────────\n`;
                 deliveryEntries.sort((a, b) => new Date(b.fromDate) - new Date(a.fromDate));
                 deliveryEntries.slice(0, 5).forEach((entry, index) => {
-                    message += `${index + 1}. ${formatDate(entry.fromDate)} سے ${formatDate(entry.toDate)}\n`;
-                    message += `   ${entry.days} دن × ${entry.liters} لیٹر = ${entry.totalLiters} لیٹر\n`;
-                    message += `   ${entry.totalLiters} × ${entry.rate} = *${entry.amount} روپے*\n`;
+                    message += `${index + 1}️⃣ *${formatDate(entry.fromDate)}* سے *${formatDate(entry.toDate)}*\n`;
+                    message += `   🗓️ کل دن: ${entry.days}\n`;
+                    message += `   🥛 روزانہ: ${entry.liters} لیٹر\n`;
+                    message += `   📊 کل لیٹر: ${entry.totalLiters}\n`;
+                    message += `   💵 ریٹ: ${entry.rate} روپے فی لیٹر\n`;
+                    message += `   💰 *کل رقم: ${entry.amount.toLocaleString('ur-PK')} روپے*\n`;
                     if (entry.note) {
-                        message += `   📝 ${entry.note}\n`;
+                        message += `   📝 نوٹ: ${entry.note}\n`;
                     }
                     message += `\n`;
                 });
                 if (deliveryEntries.length > 5) {
-                    message += `... اور ${deliveryEntries.length - 5} مزید انٹریز\n\n`;
+                    message += `... اور ${deliveryEntries.length - 5} مزید فراہمی انٹریز\n\n`;
                 }
             }
 
             if (paymentEntries.length > 0) {
-                message += `💰 *ادائیگیاں:*\n`;
+                message += `💳 *ادائیگی کی تفصیل:*\n`;
+                message += `───────────────────────────\n`;
                 paymentEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
                 paymentEntries.slice(0, 5).forEach((entry, index) => {
-                    message += `${index + 1}. ${formatDate(entry.date)} - *${entry.amount} روپے*\n`;
+                    message += `${index + 1}️⃣ *${formatDate(entry.date)}*\n`;
+                    message += `   💰 رقم: ${parseFloat(entry.amount).toLocaleString('ur-PK')} روپے\n`;
                     if (entry.note) {
-                        message += `   📝 ${entry.note}\n`;
+                        message += `   📝 نوٹ: ${entry.note}\n`;
                     }
+                    message += `\n`;
                 });
                 if (paymentEntries.length > 5) {
-                    message += `... اور ${paymentEntries.length - 5} مزید ادائیگیاں\n`;
+                    message += `... اور ${paymentEntries.length - 5} مزید ادائیگیاں\n\n`;
                 }
-                message += `\n`;
             }
 
             if (dayOffEntries.length > 0) {
                 message += `🚫 *چھٹی کے دن:*\n`;
+                message += `───────────────────────────\n`;
                 dayOffEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
                 dayOffEntries.slice(0, 3).forEach((entry, index) => {
-                    message += `${index + 1}. ${formatDate(entry.date)} - ${entry.reason || 'کوئی وجہ نہیں'}\n`;
+                    message += `${index + 1}️⃣ ${formatDate(entry.date)}\n`;
+                    message += `   📝 وجہ: ${entry.reason || 'کوئی وجہ نہیں'}\n\n`;
                 });
                 if (dayOffEntries.length > 3) {
-                    message += `... اور ${dayOffEntries.length - 3} مزید چھٹیاں\n`;
+                    message += `... اور ${dayOffEntries.length - 3} مزید چھٹیاں\n\n`;
                 }
-                message += `\n`;
             }
 
-            message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `🏪 *دودھ کا کاروبار (Fixed Version)*\n`;
-            message += `📱 Generated by Milk Business App\n`;
-            message += `⏰ ${new Date().toLocaleString('ur-PK')}`;
+            message += `═══════════════════════════\n`;
+            message += `🏪 *دودھ کا کاروبار*\n`;
+            message += `📱 ایپ سے تیار شدہ رپورٹ\n`;
+            message += `🕐 ${new Date().toLocaleString('ur-PK')}\n`;
+            message += `═══════════════════════════\n`;
+            message += `\n*شکریہ آپ کے اعتماد کا* 🙏`;
 
             return message;
         }
